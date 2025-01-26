@@ -248,6 +248,8 @@ function SkillCard({
     return "bg-green-400 dark:bg-green-500";
   };
 
+  const [isLoading, setIsLoading] = useState(true);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -258,14 +260,22 @@ function SkillCard({
       <Badge className={`${getProficiencyClasses(skill.level)} z-20 absolute top-4 right-4`}>
         {getProficiencyLabel(skill.level)}
       </Badge>
-      <div
-        className="mb-4 flex justify-center items-center p-3 rounded-md bg-gray-100 dark:bg-gray-900 shadow-sm hover:scale-105 transition-all ease-in duration-300"
-      >
-        <div className="relative w-12 h-12 rounded-md overflow-hidden">
-          <img
+      <div className="mb-4 flex justify-center items-center p-3 rounded-md bg-gray-100 dark:bg-gray-900 shadow-sm hover:scale-105 transition-all ease-in duration-300">
+        <div className="relative w-12 h-12 rounded-md overflow-hidden border border-gray-300 hover:shadow-lg transition-all duration-300 ease-in-out">
+          {isLoading && (
+            <div className="absolute inset-0 bg-gray-300 dark:bg-gray-700 animate-pulse"></div>
+          )}
+          <Image
             src={skill.icon}
             alt={skill.name}
-            className="object-cover"
+            width={48}
+            height={48}
+            className={`object-cover transition-transform duration-300 ease-in-out transform hover:scale-105 ${isLoading ? 'opacity-0' : 'opacity-100'
+              }`}
+            loading="lazy"
+            onLoadingComplete={() => setIsLoading(false)}
+            placeholder="blur"
+            blurDataURL="/placeholder.svg"
           />
         </div>
       </div>
