@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import { motion, useInView, useMotionValue, useScroll, useSpring } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Briefcase, Calendar, GraduationCap, Heart, School } from "lucide-react";
+import { ArrowRight, Calendar } from "lucide-react";
 import Link from "next/link";
 import { VerticalTimeline, VerticalTimelineElement } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
