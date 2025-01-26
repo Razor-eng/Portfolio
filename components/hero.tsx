@@ -11,8 +11,10 @@ import { useRef } from "react"
 
 export function Hero() {
   const ref = useRef(null);
+  const devRef = useRef(null);
   const introRef = useRef(null);
   const isInView = useInView(ref, { once: true });
+  const isDevView = useInView(devRef, { once: true });
 
   return (
     <section ref={introRef} className="relative min-h-screen flex justify-center overflow-hidden bg-gradient-to-br from-background via-background to-primary/20 pt-20">
@@ -27,7 +29,7 @@ export function Hero() {
             <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-300 dark:hidden rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
             <div className="absolute top-0 -right-4 w-72 h-72 bg-yellow-300 dark:hidden rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
             <div className="absolute -bottom-8 -left-4 w-72 h-72 bg-pink-300 dark:hidden rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
-            <div ref={ref} className="relative overflow-hidden">
+            <div className="relative overflow-hidden">
               <Image
                 src={heroData.image}
                 width={500}
@@ -37,9 +39,10 @@ export function Hero() {
                 priority
                 placeholder="blur"
                 blurDataURL="/placeholder.svg"
-                ref={ref}
+                ref={devRef}
                 style={{
-                  transform: isInView ? "none" : "translateX(-200px)",
+                  transform: isDevView ? "none" : "translateX(-200px)",
+                  opacity: isDevView ? 1 : 0,
                   transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.5s",
                 }}
               />
