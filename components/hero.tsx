@@ -27,20 +27,22 @@ export function Hero() {
             <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-300 dark:hidden rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
             <div className="absolute top-0 -right-4 w-72 h-72 bg-yellow-300 dark:hidden rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
             <div className="absolute -bottom-8 -left-4 w-72 h-72 bg-pink-300 dark:hidden rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
-            <div className="relative">
+            <div className="relative overflow-hidden">
               <Image
                 src={heroData.image || "/placeholder.svg"}
                 width={500}
                 height={500}
                 alt={heroData.name}
-                className='w-full lg:w-full md:inline-block md:w-full'
+                className="w-full md:w-full lg:w-full"
                 priority
                 ref={ref}
                 style={{
                   transform: isInView ? "none" : "translateX(-200px)",
                   opacity: isInView ? 1 : 0,
-                  transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.5s"
+                  transition: "all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.5s",
                 }}
+                placeholder="blur"
+                blurDataURL="/placeholder.svg"
               />
             </div>
           </motion.div>

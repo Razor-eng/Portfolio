@@ -59,6 +59,8 @@ export function ProjectDetails({ project }: ProjectDetailsProps) {
         }
     };
 
+    const [isLoading, setLoading] = useState(true);
+
     return (
         <>
             <TransitionEffect />
@@ -69,9 +71,9 @@ export function ProjectDetails({ project }: ProjectDetailsProps) {
                         initial="hidden"
                         animate="visible"
                         exit="hidden"
-                        className="container mx-auto px-4"
+                        className="container mx-auto px-6 lg:px-12"
                     >
-                        <motion.div className="flex gap-12 flex-col lg:flex-row justify-between">
+                        <motion.div className="flex justify-around gap-12 flex-col lg:flex-row">
                             <div className="max-w-2xl flex-1">
                                 <motion.div
                                     variants={itemVariants}
@@ -134,12 +136,18 @@ export function ProjectDetails({ project }: ProjectDetailsProps) {
                                                             <Dialog>
                                                                 <DialogTrigger asChild>
                                                                     <div>
+                                                                        {isLoading && <div className="absolute inset-0 animate-pulse bg-gray-300 dark:bg-gray-700" />}
                                                                         <Image
-                                                                            src={image + "?w=800&h=600&fit=crop" || "/placeholder.svg"}
+                                                                            src={image ? `${image}?w=800&h=600&fit=crop` : "/placeholder.svg"}
                                                                             alt={`${project.title} screenshot ${index + 1}`}
                                                                             fill
-                                                                            className="aspect-video cursor-pointer"
+                                                                            className={`aspect-video cursor-pointer transition-all duration-700 ease-in-out ${isLoading ? 'scale-105 blur-sm' : 'scale-100 blur-0'
+                                                                                }`}
                                                                             priority={index === 0}
+                                                                            loading={index === 0 ? 'eager' : 'lazy'}
+                                                                            placeholder="blur"
+                                                                            blurDataURL="/placeholder.jpg"
+                                                                            onLoadingComplete={() => setLoading(false)}
                                                                         />
                                                                     </div>
                                                                 </DialogTrigger>
@@ -147,11 +155,18 @@ export function ProjectDetails({ project }: ProjectDetailsProps) {
                                                                 <DialogContent className="p-0 sm:max-w-4xl">
                                                                     <DialogTitle className="hidden">{project.title}</DialogTitle>
                                                                     <div className="relative w-full aspect-video">
+                                                                        {isLoading && <div className="absolute inset-0 animate-pulse bg-gray-300 dark:bg-gray-700" />}
                                                                         <Image
-                                                                            src={image + "?w=800&h=600&fit=crop"}
-                                                                            alt={`${project.title} full view`}
+                                                                            src={image ? `${image}?w=800&h=600&fit=crop` : "/placeholder.svg"}
+                                                                            alt={`${project.title} screenshot ${index + 1}`}
                                                                             fill
-                                                                            className="aspect-video"
+                                                                            className={`aspect-video cursor-pointer transition-all duration-700 ease-in-out ${isLoading ? 'scale-105 blur-sm' : 'scale-100 blur-0'
+                                                                                }`}
+                                                                            priority={index === 0}
+                                                                            loading={index === 0 ? 'eager' : 'lazy'}
+                                                                            placeholder="blur"
+                                                                            blurDataURL="/placeholder.jpg"
+                                                                            onLoadingComplete={() => setLoading(false)}
                                                                         />
                                                                     </div>
                                                                 </DialogContent>
@@ -167,9 +182,11 @@ export function ProjectDetails({ project }: ProjectDetailsProps) {
                                         <div className="relative aspect-video rounded-lg overflow-hidden">
                                             <Image
                                                 src="/placeholder.svg"
-                                                alt="Placeholder"
+                                                alt="/Placeholder.svg"
                                                 fill
-                                                className="object-cover"
+                                                className="aspect-video"
+                                                loading="lazy"
+                                                placeholder="blur"
                                             />
                                         </div>
                                     )}

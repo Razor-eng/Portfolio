@@ -164,6 +164,8 @@ interface ProjectCardProps {
 }
 
 function ProjectCard({ project }: ProjectCardProps) {
+  const [isLoading, setLoading] = useState(true);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -189,11 +191,19 @@ function ProjectCard({ project }: ProjectCardProps) {
                     {project.images.map((image, index) => (
                       <CarouselItem key={index}>
                         <div className="relative aspect-video">
+                          {isLoading && (
+                            <div className="absolute inset-0 animate-pulse bg-gray-300 dark:bg-gray-700" />
+                          )}
                           <Image
                             src={image}
                             alt={`${project.title} screenshot ${index + 1}`}
                             fill
-                            className="aspect-video"
+                            className={`transition-all duration-700 ease-in-out ${isLoading ? 'scale-105 blur-sm' : 'scale-100 blur-0'}`}
+                            placeholder="blur"
+                            blurDataURL="/placeholder.svg"
+                            onLoadingComplete={() => setLoading(false)}
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            loading="lazy"
                           />
                         </div>
                       </CarouselItem>
