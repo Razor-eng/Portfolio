@@ -260,7 +260,6 @@ export const allProjects: Project[] = [
     tags: ['Email', 'Clone'],
     images: [
       '/images/projects/Gmail/img1.png',
-      '/images/projects/Gmail/img2.png',
     ],
     year: 2024,
     complexity: 'Intermediate',

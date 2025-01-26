@@ -270,9 +270,8 @@ function SkillCard({
             alt={skill.name}
             width={48}
             height={48}
-            className={`object-cover transition-transform duration-300 ease-in-out transform hover:scale-105 ${isLoading ? 'opacity-0' : 'opacity-100'
-              }`}
-            loading="lazy"
+            className={`object-cover transition-transform duration-300 ease-in-out transform hover:scale-105 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+            priority
             onLoadingComplete={() => setIsLoading(false)}
             placeholder="blur"
             blurDataURL="/placeholder.svg"

@@ -42,8 +42,12 @@ export function Skills() {
                 <Image
                   src={tech.icon}
                   alt={tech.name}
-                  fill={true}
+                  fill
+                  className="transition-all duration-500 ease-in-out transform hover:scale-110"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 20vw"
+                  placeholder="blur"
+                  blurDataURL="/placeholder.svg"
+                  priority
                 />
                 <div className="opacity-0 w-fit min-w-[80px] bg-blue-50 dark:bg-zinc-700 whitespace-nowrap text-center text-xs rounded-lg py-2 absolute z-10 group-hover:opacity-100 px-3 -top-3/4 -left-1/3 pointer-events-none">
                   {tech.name}

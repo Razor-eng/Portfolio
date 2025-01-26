@@ -58,12 +58,15 @@ export default function About() {
 
                             <div className='xl:col-span-3 relative h-max rounded-2xl border-2 border-solid bg-white p-8 dark:bg-[#101010] md:col-span-4 md:order-1 order-2 col-span-8'>
                                 <Image
-                                    src={'/dev.png'}
-                                    alt='Rajat'
+                                    src="/dev.png"
+                                    alt="Rajat"
                                     width={500}
                                     height={500}
-                                    className='w-full lg:w-full md:inline-block md:w-full'
+                                    className="w-full lg:w-full md:inline-block md:w-full"
                                     priority
+                                    loading="lazy"
+                                    placeholder="blur"
+                                    blurDataURL="/placeholder.svg"
                                 />
                             </div>
 
@@ -382,10 +385,13 @@ function Skills() {
                             }}
                             custom={index}
                         >
-                            <img
+                            <Image
                                 src={skill.icon}
                                 alt={skill.name}
-                                className="w-6 h-6 mr-2"
+                                width={24}
+                                height={24}
+                                className="w-full h-full"
+                                priority
                             />
                             <span>{skill.name}</span>
                         </motion.li>
