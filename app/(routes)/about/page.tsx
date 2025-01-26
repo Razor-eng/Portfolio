@@ -69,24 +69,24 @@ export default function About() {
                                 />
                             </div>
 
-                            <div className='xl:col-span-2 flex xl:flex-col xl:items-end justify-between col-span-8 flex-row items-center order-3'>
+                            <div className='xl:col-span-2 grid grid-cols-2 gap-y-2 md:flex xl:flex-col xl:items-end justify-between col-span-8 flex-row items-center order-3'>
                                 <div className='flex flex-col xl:items-end justify-center items-center'>
                                     <span className='inline-block md:text-7xl font-semibold sm:text-6xl xs:text-5xl text-4xl'>
                                         <AnimatedNumbers value={10} />+
                                     </span>
-                                    <h2 className='md:text-xl font-medium capitalize text-black/75 dark:text-white/75 xl:text-center sm:text-lg xs:text-base text-sm'>satisfied clients</h2>
+                                    <h2 className='md:text-xl font-medium capitalize text-black/75 dark:text-white/75 xl:text-center sm:text-lg xs:text-base text-sm whitespace-nowrap'>satisfied clients</h2>
                                 </div>
                                 <div className='flex flex-col xl:items-end justify-center items-center'>
                                     <span className='inline-block md:text-7xl font-semibold sm:text-6xl xs:text-5xl text-4xl'>
                                         <AnimatedNumbers value={40} />+
                                     </span>
-                                    <h2 className='md:text-xl font-medium capitalize text-black/75 dark:text-white/75 xl:text-center sm:text-lg xs:text-base text-sm'>projects completed</h2>
+                                    <h2 className='md:text-xl font-medium capitalize text-black/75 dark:text-white/75 xl:text-center sm:text-lg xs:text-base text-sm whitespace-nowrap'>projects completed</h2>
                                 </div>
-                                <div className='flex flex-col xl:items-end justify-center items-center'>
+                                <div className='flex flex-col xl:items-end justify-center items-center col-span-2'>
                                     <span className='inline-block md:text-7xl font-semibold sm:text-6xl xs:text-5xl text-4xl'>
                                         <AnimatedNumbers value={4} />+
                                     </span>
-                                    <h2 className='md:text-xl font-medium capitalize text-black/75 dark:text-white/75 xl:text-center sm:text-lg xs:text-base text-sm'>years of experience</h2>
+                                    <h2 className='md:text-xl font-medium capitalize text-black/75 dark:text-white/75 xl:text-center sm:text-lg xs:text-base text-sm whitespace-nowrap'>years of experience</h2>
                                 </div>
                             </div>
                         </div>
