@@ -80,7 +80,7 @@ export function FeaturedProjects() {
                   alt={project.title}
                   fill
                   style={{ objectFit: "cover" }}
-                  className="transition-all duration-500 ease-in-out transform hover:scale-110 blur-sm group-hover:blur-none"
+                  className="transition-all duration-500 ease-in-out transform hover:scale-110 group-hover:blur-none"
                 />
                 <motion.div
                   className="absolute inset-0 bg-black/60 flex items-center justify-center rounded-t-lg"

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
-import type { SortOption, GroupByOption } from "@/lib/types"
+import type { SortOption, GroupByOption, CategoryOption } from "@/lib/types"
 import { Badge } from "@/components/ui/badge"
 import { SlidersHorizontal, X } from "lucide-react"
 import {
@@ -19,7 +19,7 @@ import { Separator } from "@/components/ui/separator"
 import { ScrollArea } from "@/components/ui/scroll-area"
 
 interface ProjectsFilterProps {
-    categories: string[]
+    categories: CategoryOption[];
     technologies: string[]
     onCategoryChange: (category: string | null) => void
     onTechnologiesChange: (technologies: string[]) => void

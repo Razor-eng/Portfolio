@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Github, Calendar, Code, Gauge } from "lucide-react";
+import { ExternalLink, Calendar, Code, Gauge } from "lucide-react";
 import {
     Carousel,
     CarouselContent,
@@ -18,6 +18,8 @@ import { cn } from "@/lib/utils";
 import TransitionEffect from "./transition-effect";
 import { technologies } from "@/data/technologies";
 import Link from "next/link";
+import { GithubIcon } from "@/data/icons";
+import { Dialog, DialogContent, DialogOverlay, DialogTitle, DialogTrigger } from "./ui/dialog";
 
 interface ProjectDetailsProps {
     project: Project;
@@ -129,13 +131,31 @@ export function ProjectDetails({ project }: ProjectDetailsProps) {
                                                             animate={{ opacity: 1 }}
                                                             transition={{ duration: 0.5 }}
                                                         >
-                                                            <Image
-                                                                src={image + "?w=800&h=600&fit=crop" || "/placeholder.svg"}
-                                                                alt={`${project.title} screenshot ${index + 1}`}
-                                                                fill
-                                                                className="object-cover"
-                                                                priority={index === 0}
-                                                            />
+                                                            <Dialog>
+                                                                <DialogTrigger asChild>
+                                                                    <div>
+                                                                        <Image
+                                                                            src={image + "?w=800&h=600&fit=crop" || "/placeholder.svg"}
+                                                                            alt={`${project.title} screenshot ${index + 1}`}
+                                                                            fill
+                                                                            className="aspect-video cursor-pointer"
+                                                                            priority={index === 0}
+                                                                        />
+                                                                    </div>
+                                                                </DialogTrigger>
+                                                                <DialogOverlay />
+                                                                <DialogContent className="p-0 sm:max-w-4xl">
+                                                                    <DialogTitle className="hidden">{project.title}</DialogTitle>
+                                                                    <div className="relative w-full aspect-video">
+                                                                        <Image
+                                                                            src={image + "?w=800&h=600&fit=crop"}
+                                                                            alt={`${project.title} full view`}
+                                                                            fill
+                                                                            className="aspect-video"
+                                                                        />
+                                                                    </div>
+                                                                </DialogContent>
+                                                            </Dialog>
                                                         </motion.div>
                                                     </CarouselItem>
                                                 ))}
@@ -244,7 +264,9 @@ export function ProjectDetails({ project }: ProjectDetailsProps) {
                                                 rel="noopener noreferrer"
                                                 className="flex items-center gap-2"
                                             >
-                                                <Github className="w-5 h-5" />
+                                                <div className="w-6">
+                                                    <GithubIcon />
+                                                </div>
                                                 Source Code
                                             </Link>
                                         </Button>

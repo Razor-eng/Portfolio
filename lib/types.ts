@@ -7,7 +7,7 @@ export interface Project {
     challenge: string;
     solution: string;
     technicalDetails: string;
-    category?: 'Featured' | 'Recent' | 'Landing Page';
+    category: CategoryOption;
     technologies: string[];
     images: string[];
     tags: string[];
@@ -20,3 +20,4 @@ export interface Project {
 
 export type SortOption = 'latest' | 'alphabetical' | 'complexity';
 export type GroupByOption = 'category' | 'techStack' | 'year';
+export type CategoryOption = 'Featured' | 'Recent' | 'Landing Page' | 'Clone';

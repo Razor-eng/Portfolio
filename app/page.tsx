@@ -6,7 +6,6 @@ import { Hero } from "@/components/hero"
 import { AboutMe } from "@/components/about-me"
 import { FeaturedProjects } from "@/components/featured-projects"
 import { Skills } from "@/components/skills"
-import { Contact } from "@/components/contact"
 import TransitionEffect from "@/components/transition-effect"
 
 const fadeInUp = {
@@ -51,9 +50,6 @@ export default function Home() {
         </AnimatedSection>
         <AnimatedSection>
           <Skills />
-        </AnimatedSection>
-        <AnimatedSection>
-          <Contact />
         </AnimatedSection>
       </motion.main>
     </>

@@ -172,7 +172,15 @@ function ProjectCard({ project }: ProjectCardProps) {
       whileHover={{ y: -5 }}
     >
       <Link href={`/projects/${project.slug}`}>
-        <Card className="overflow-hidden group cursor-pointer h-full flex flex-col">
+        <Card
+          className={cn(
+            "overflow-hidden group cursor-pointer h-full flex flex-col",
+            project.category === "Featured" && "border-amber-500/50",
+            project.category === "Recent" && "border-blue-500/50",
+            project.category === "Landing Page" && "border-green-500/50",
+            project.category === "Clone" && "border-purple-500/50",
+          )}
+        >
           <CardHeader className="p-0">
             {
               project.images.length > 0 ? (
@@ -185,7 +193,7 @@ function ProjectCard({ project }: ProjectCardProps) {
                             src={image}
                             alt={`${project.title} screenshot ${index + 1}`}
                             fill
-                            className="object-cover"
+                            className="aspect-video"
                           />
                         </div>
                       </CarouselItem>
@@ -200,7 +208,7 @@ function ProjectCard({ project }: ProjectCardProps) {
                     src="/placeholder.svg"
                     alt="placeholder"
                     fill
-                    className="object-cover"
+                    className="object-contain"
                   />
                 </div>
               )
@@ -217,27 +225,35 @@ function ProjectCard({ project }: ProjectCardProps) {
               <p className="text-muted-foreground mb-2 line-clamp-3">
                 {project.description}
               </p>
+            </div>
+            <div className="flex flex-col">
               <div className="flex flex-wrap gap-1 mb-4">
-                {project.technologies.map((tech) => (
+                {project.technologies.slice(0, 3).map((tech) => (
                   <Badge key={tech} variant="secondary" className="capitalize rounded-md py-1">
                     {tech}
                   </Badge>
                 ))}
-              </div>
-            </div>
-            <Separator className="mb-1" />
-            <div className="flex items-center justify-between mt-1">
-              <Badge
-                className={cn(
-                  "px-4 text-sm font-semibold rounded transition-colors",
-                  project.category === "Featured" && "bg-amber-500/10 text-amber-500 hover:bg-amber-500/30",
-                  project.category === "Recent" && "bg-blue-500/10 text-blue-500 hover:bg-blue-500/30",
-                  project.category === "Landing Page" && "bg-green-500/10 text-green-500 hover:bg-green-500/30",
+                {project.technologies.length > 3 && (
+                  <Badge variant="secondary" className="capitalize rounded-md py-1">
+                    +{project.technologies.length - 3}
+                  </Badge>
                 )}
-              >
-                {project.category}
-              </Badge>
-              <span className="text-sm font-semibold text-muted-foreground">{project.year}</span>
+              </div>
+              <Separator className="mb-1" />
+              <div className="flex items-center justify-between mt-1">
+                <Badge
+                  className={cn(
+                    "px-4 text-sm font-semibold rounded transition-colors",
+                    project.category === "Featured" && "bg-amber-500/10 text-amber-500 hover:bg-amber-500/30",
+                    project.category === "Recent" && "bg-blue-500/10 text-blue-500 hover:bg-blue-500/30",
+                    project.category === "Landing Page" && "bg-green-500/10 text-green-500 hover:bg-green-500/30",
+                    project.category === "Clone" && "bg-purple-500/10 text-purple-500 hover:bg-purple-500/30"
+                  )}
+                >
+                  {project.category}
+                </Badge>
+                <span className="text-sm font-semibold text-muted-foreground">{project.year}</span>
+              </div>
             </div>
           </CardContent>
         </Card>

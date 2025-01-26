@@ -30,7 +30,7 @@ export function Navbar() {
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
       className="fixed w-full top-0 z-20 bg-background/50 backdrop-blur-lg border-b border-border"
     >
-      <div className="container mx-auto px-4 py-1">
+      <div className="container mx-auto pl-0 px-4 py-1">
         <div className="flex items-center justify-between">
           <Link href="/" prefetch={false}>
             <Image

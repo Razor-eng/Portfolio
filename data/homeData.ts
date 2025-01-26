@@ -32,32 +32,33 @@ export const aboutMeData = {
 
 export const featuredProjectsData = [
   {
-    id: 1,
-    title: "Interactive Portfolio",
-    slug: "interactive-portfolio",
-    description: "A dynamic and engaging portfolio website showcasing creative work.",
-    image: "",
-    link: "/projects/interactive-portfolio",
-    tags: ["Next.js", "React", "Tailwind CSS"]
+    "id": 1,
+    "title": "EasyBuyy",
+    "slug": "easybuyy",
+    "description": "A fully responsive E-Commerce website with an admin panel for managing products and orders.",
+    "image": "/images/projects/EasyBuyy/img1.png",
+    "link": "/projects/easybuyy",
+    "tags": ['Next.js', 'React', 'Firebase', 'TailwindCSS'],
   },
   {
-    id: 2,
-    title: "E-commerce Platform",
-    slug: "e-commerce-platform",
-    description: "A modern e-commerce solution with seamless user experience.",
-    image: "/placeholder.svg?height=400&width=600",
-    link: "/projects/e-commerce-platform",
-    tags: ["React", "Node.js", "MongoDB"]
+    "id": 2,
+    "title": "Docx",
+    "slug": "docx",
+    "description": "A responsive, real-time document editing application inspired by Microsoft Word.",
+    "image": "/images/projects/Docs/img1.png",
+    "link": "/projects/docx",
+    "tags": ['Next.js', 'React', 'TailwindCSS', 'Convex', 'Clerk']
   },
   {
-    id: 3,
-    title: "Social Media Dashboard",
-    slug: "social-media-dashboard",
-    description: "An all-in-one dashboard for managing multiple social media accounts.",
-    image: "/placeholder.svg?height=400&width=600",
-    link: "/projects/social-media-dashboard",
-    tags: ["Vue.js", "Express", "PostgreSQL"]
-  },
+    "id": 3,
+    "title": "Jira",
+    "slug": "jira",
+    "description": "A project management tool to track issues, manage tasks, and automate workflows.",
+    "image": "/images/projects/Jira/img1.png",
+    "link": "/projects/jira",
+    "tags": ['Next.js', 'TypeScript', 'Appwrite', 'TailwindCSS']
+  }
+
 ]
 
 export const contactData = {
