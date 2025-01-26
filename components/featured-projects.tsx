@@ -15,6 +15,7 @@ export function FeaturedProjects() {
   const isInView = useInView(ref, { once: true })
   const textRef = useRef(null);
   const isTextInView = useInView(textRef, { once: true });
+  const [isLoading, setIsLoading] = useState(true);
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-bl from-background via-background to-primary/20">
@@ -75,12 +76,20 @@ export function FeaturedProjects() {
               }}
             >
               <div className="relative aspect-video rounded-t-lg overflow-hidden"              >
+                {isLoading && (
+                  <div className="absolute inset-0 bg-gray-300 dark:bg-gray-700 animate-pulse"></div>
+                )}
                 <Image
                   src={project.image || "/placeholder.svg"}
                   alt={project.title}
                   fill
+                  className={`transition-all duration-500 ease-in-out transform hover:scale-110 group-hover:blur-none ${isLoading ? 'opacity-0' : 'opacity-100'
+                    }`}
                   style={{ objectFit: "cover" }}
-                  className="transition-all duration-500 ease-in-out transform hover:scale-110 group-hover:blur-none"
+                  loading="lazy"
+                  onLoadingComplete={() => setIsLoading(false)}
+                  placeholder="blur"
+                  blurDataURL="/placeholder.svg"
                 />
                 <motion.div
                   className="absolute inset-0 bg-black/60 flex items-center justify-center rounded-t-lg"
