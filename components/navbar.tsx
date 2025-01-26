@@ -95,9 +95,6 @@ export function Navbar() {
                 <SheetTitle className="hidden">Navbar</SheetTitle>
                 <SheetDescription className="hidden">Navbar Toggle</SheetDescription>
               </SheetHeader>
-              <Link href="/" className="mr-6 hidden lg:flex" prefetch={false}>
-                JD
-              </Link>
               <div className="container flex flex-col justify-between h-full mx-auto px-4 py-4">
                 <div className="flex flex-col">
                   {navItems.map((item) => (
@@ -105,10 +102,17 @@ export function Navbar() {
                       key={item.name}
                       href={item.href}
                       prefetch={false}
-                      className={`flex w-full pl-4 items-center justify-between py-2 text-lg font-semibold text-foreground/70 hover:text-foreground transition-colors`}
+                      className={`grid grid-cols-8 w-full pl-4 items-center py-2 text-lg font-semibold text-foreground/70 hover:text-foreground transition-colors`}
                     >
-                      {item.name}
-                      <div className={`${pathname === item.href ? 'bg-primary size-3 rounded-full' : 'hidden'}`} />
+                      <div className="col-span-5">
+                        {item.name}
+                      </div>
+                      {pathname === item.href && (
+                        <>
+                          <div className="flex-1 bg-primary h-[1px] col-span-2" />
+                          <div className="bg-primary size-3 rounded-full col-span-1" />
+                        </>
+                      )}
                     </Link>
                   ))}
                 </div>
