@@ -1,88 +1,384 @@
-import { useTheme } from 'next-themes';
-import { AiFillHtml5, AiOutlineAntDesign, AiFillGithub, AiFillGitlab } from "react-icons/ai";
-import { DiCss3, DiVisualstudio } from "react-icons/di";
-import { IoLogoJavascript } from "react-icons/io";
-import { FaReact, FaWordpressSimple, FaFigma, FaTrello, FaJava, FaDatabase } from "react-icons/fa";
-import { BsBootstrap } from "react-icons/bs";
-import { TbBrandNextjs, TbBrandTailwind } from "react-icons/tb";
-import { RiFlutterFill } from "react-icons/ri";
-import { SiAdobexd, SiWebstorm, SiJirasoftware, SiMui, SiChakraui, SiStyledcomponents, SiTypescript, SiPython, SiCplusplus, SiNodedotjs, SiExpress, SiSpringboot, SiAppwrite, SiMongodb, SiMysql, SiPostgresql, SiSqlite, SiFirebase } from "react-icons/si";
-
-export const TECHNOLOGIES = () => {
-	const { theme } = useTheme();
-
-	const getColor = (lightColor: string, darkColor: string): string => theme === 'dark' ? darkColor : lightColor;
-
-	return [
+export const technologies = {
+	languages: [
 		{
-			category: "Languages",
-			items: [
-				{ name: "JavaScript", icon: <IoLogoJavascript size={32} color={getColor("#F7DF1E", "#F1E100")} /> },
-				{ name: "TypeScript", icon: <SiTypescript size={32} color={getColor("#3178C6", "#2F74C0")} /> },
-				{ name: "Python", icon: <SiPython size={32} color={getColor("#306998", "#FFD43B")} /> },
-				{ name: "Java", icon: <FaJava size={32} color={getColor("#007396", "#D84B16")} /> },
-				{ name: "C++", icon: <SiCplusplus size={32} color={getColor("#00599C", "#2B85D9")} /> }
-			]
+			name: "C",
+			icon: "/icons/c.svg",
+			link: "https://en.cppreference.com/w/c",
+			level: 70,
 		},
 		{
-			category: "Front-end",
-			items: [
-				{ name: "HTML", icon: <AiFillHtml5 size={32} color={getColor("#E44D26", "#FF6A13")} /> },
-				{ name: "CSS", icon: <DiCss3 size={32} color={getColor("#1572B6", "#4B9CD3")} /> },
-				{ name: "JS", icon: <IoLogoJavascript size={32} color={getColor("#F7DF1E", "#F1E100")} /> },
-				{ name: "React", icon: <FaReact size={32} color={getColor("#61DAFB", "#4FD2D6")} /> },
-				{ name: "Next", icon: <TbBrandNextjs size={32} color={getColor("#000000", "#FFFFFF")} /> },
-				{ name: "Tailwind CSS", icon: <TbBrandTailwind size={32} color={getColor("#06B6D4", "#33A9C3")} /> },
-				{ name: "MUI", icon: <SiMui size={32} color={getColor("#007FFF", "#4285F4")} /> },
-				{ name: "AntD", icon: <AiOutlineAntDesign size={32} color={getColor("#0170FE", "#0E66C2")} /> },
-				{ name: "Bootstrap", icon: <BsBootstrap size={32} color={getColor("#7952B3", "#5C4D9F")} /> },
-				{ name: "Chakra", icon: <SiChakraui size={32} color={getColor("#319795", "#5E6D58")} /> },
-				{ name: "styled components", icon: <SiStyledcomponents size={32} color={getColor("#DB7093", "#D45380")} /> },
-				{ name: "HeadlessUI", icon: <SiMui size={32} color={getColor("#000000", "#FFFFFF")} /> }
-			]
+			name: "Java",
+			icon: "/icons/java.svg",
+			link: "https://www.java.com/en/",
+			level: 80,
 		},
 		{
-			category: "Backend",
-			items: [
-				{ name: "Node.js", icon: <SiNodedotjs size={32} color={getColor("#68A063", "#4CAF50")} /> },
-				{ name: "Express.js", icon: <SiExpress size={32} color={getColor("#000000", "#FFFFFF")} /> },
-				{ name: "Spring Boot", icon: <SiSpringboot size={32} color={getColor("#6DB33F", "#1E8E3E")} /> },
-				{ name: "Convex", icon: <FaDatabase size={32} color={getColor("#B759FF", "#9C43FF")} /> },
-				{ name: "Appwrite", icon: <SiAppwrite size={32} color={getColor("#2A75C1", "#1D62A8")} /> }
-			]
+			name: "Python",
+			icon: "/icons/python.svg",
+			link: "https://www.python.org/",
+			level: 85,
+		},
+		// {
+		// 	name: "C++",
+		// 	icon: "/icons/cpp.svg",
+		// 	link: "https://en.cppreference.com/w/cpp",
+		// 	level: 70,
+		// },
+		// {
+		// 	name: "Go",
+		// 	icon: "/icons/go.svg",
+		// 	link: "https://golang.org/",
+		// 	level: 70,
+		// },
+		// {
+		// 	name: "Kotlin",
+		// 	icon: "/icons/kotlin.svg",
+		// 	link: "https://kotlinlang.org/",
+		// 	level: 70,
+		// },
+		// {
+		// 	name: "Rust",
+		// 	icon: "/icons/rust.svg",
+		// 	link: "https://www.rust-lang.org/",
+		// 	level: 70,
+		// },
+		// {
+		// 	name: "Swift",
+		// 	icon: "/icons/swift.svg",
+		// 	link: "https://swift.org/",
+		// 	level: 70,
+		// },
+		// {
+		// 	name: "PHP",
+		// 	icon: "/icons/php.svg",
+		// 	link: "https://www.php.net/",
+		// 	level: 70,
+		// },
+		// {
+		// 	name: "Ruby",
+		// 	icon: "/icons/ruby.svg",
+		// 	link: "https://www.ruby-lang.org/en/",
+		// 	level: 70,
+		// },
+		// {
+		// 	name: "Shell",
+		// 	icon: "/icons/shell.svg",
+		// 	link: "https://en.wikipedia.org/wiki/Shell_script",
+		// 	level: 70,
+		// },
+	],
+	frontend: [
+		{
+			name: "HTML5",
+			icon: "/icons/html5.svg",
+			link: "https://html.spec.whatwg.org/multipage/",
+			level: 95,
 		},
 		{
-			category: "Database",
-			items: [
-				{ name: "MongoDB", icon: <SiMongodb size={32} color={getColor("#47A248", "#43A047")} /> },
-				{ name: "MySQL", icon: <SiMysql size={32} color={getColor("#4479A1", "#00758F")} /> },
-				{ name: "PostgreSQL", icon: <SiPostgresql size={32} color={getColor("#336791", "#336791")} /> },
-				{ name: "SQLite", icon: <SiSqlite size={32} color={getColor("#003B57", "#0277BD")} /> },
-				{ name: "Firebase", icon: <SiFirebase size={32} color={getColor("#FFCA28", "#FFB300")} /> }
-			]
+			name: "CSS3",
+			icon: "/icons/css3.svg",
+			link: "https://www.w3.org/Style/CSS/Overview.en.html",
+			level: 90,
 		},
 		{
-			category: "UI tools",
-			items: [
-				{ name: "Figma", icon: <FaFigma size={32} color={getColor("#F24E1E", "#F4A261")} /> },
-				{ name: "XD", icon: <SiAdobexd size={32} color={getColor("#FF61F6", "#D162EC")} /> }
-			]
+			name: "JavaScript",
+			icon: "/icons/javascript.svg",
+			link: "https://262.ecma-international.org/",
+			level: 92,
 		},
 		{
-			category: "Other tools",
-			items: [
-				{ name: "Github", icon: <AiFillGithub size={32} color={getColor("#181717", "#FFFFFF")} /> },
-				{ name: "Gitlab", icon: <AiFillGitlab size={32} color={getColor("#FCA121", "#F55B20")} /> },
-				{ name: "VsCode", icon: <DiVisualstudio size={32} color={getColor("#007ACC", "#006BB3")} /> },
-				{ name: "WordPress CMS", icon: <FaWordpressSimple size={32} color={getColor("#21759B", "#006A8F")} /> },
-				{ name: "Jira", icon: <SiJirasoftware size={32} color={getColor("#0052CC", "#005B9F")} /> },
-				{ name: "Trello", icon: <FaTrello size={32} color={getColor("#0079BF", "#3D93BB")} /> },
-				{ name: "WebStorm", icon: <SiWebstorm size={32} color={getColor("#00BFFF", "#3D91FF")} /> }
-			]
+			name: "React",
+			icon: "/icons/react.svg",
+			link: "https://react.dev/",
+			level: 90,
 		},
 		{
-			category: "Mobile",
-			items: [{ name: "Flutter", icon: <RiFlutterFill size={32} color={getColor("#02569B", "#00A9B9")} /> }]
+			name: "TypeScript",
+			icon: "/icons/typescript.svg",
+			link: "https://www.typescriptlang.org/",
+			level: 88,
 		},
-	];
+		{
+			name: "Next.js",
+			icon: "/icons/nextjs.svg",
+			link: "https://nextjs.org/",
+			level: 85,
+		},
+		{
+			name: "TailwindCSS",
+			icon: "/icons/tailwindcss.svg",
+			link: "https://tailwindcss.com/",
+			level: 88,
+		},
+		{
+			name: "Redux/Redux-toolkit",
+			icon: "https://raw.githubusercontent.com/reduxjs/redux/master/logo/logo.png",
+			link: "https://redux.js.org",
+			level: 80,
+		},
+	],
+	backend: [
+		{
+			name: "Node.js",
+			icon: "/icons/nodejs.svg",
+			link: "https://nodejs.org/en",
+			level: 85,
+		},
+		{
+			name: "Express.js",
+			icon: "/icons/expressjs.png",
+			link: "https://expressjs.com/",
+			level: 80,
+		},
+		{
+			name: "Prisma",
+			icon: "/icons/prisma.svg",
+			link: "https://www.prisma.io/",
+			level: 80,
+		},
+		// {
+		// 	name: "Socket.io",
+		// 	icon: "/icons/socketio.svg",
+		// 	link: "https://socket.io/",
+		// 	level: 70,
+		// },
+		// {
+		// 	name: "WebSockets",
+		// 	icon: "/icons/websockets.svg",
+		// 	link: "https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API",
+		// 	level: 70,
+		// },
+		// {
+		// 	name: "RESTful APIs",
+		// 	icon: "/icons/restful-api.svg",
+		// 	link: ""
+		// },
+		// {
+		// 	name: "Microservices",
+		// 	icon: "/icons/microservices.svg",
+		// 	link: ""
+		// },
+		// {
+		// 	name: "Docker",
+		// 	icon: "/icons/docker.svg",
+		// 	link: "https://www.docker.com/",
+		// 	level: 75,
+		// },
+		// {
+		// 	name: "Kubernetes",
+		// 	icon: "/icons/kubernetes.svg",
+		// 	link: "https://kubernetes.io/",
+		// 	level: 70,
+		// },
+		// {
+		// 	name: "AWS",
+		// 	icon: "/icons/aws.svg",
+		// 	link: "https://aws.amazon.com/",
+		// 	level: 70,
+		// },
+		// {
+		// 	name: "Google Cloud",
+		// 	icon: "/icons/google-cloud.svg",
+		// 	link: "https://cloud.google.com/",
+		// 	level: 70,
+		// },
+		// {
+		// 	name: "Azure",
+		// 	icon: "/icons/azure.svg",
+		// 	link: "https://azure.microsoft.com/",
+		// 	level: 70,
+		// },
+	],
+	databases: [
+		{
+			name: "MySQL",
+			icon: "/icons/my-sql.png",
+			link: "https://www.mysql.com/",
+			level: 75,
+		},
+		{
+			name: "PostgreSQL",
+			icon: "/icons/postgresql.png",
+			link: "https://www.postgresql.org",
+			level: 75,
+		},
+		{
+			name: "MongoDB",
+			icon: "/icons/mongodb.svg",
+			link: "https://www.mongodb.com/",
+			level: 80,
+		},
+		{
+			name: "Firebase",
+			icon: "/icons/firebase.svg",
+			link: "https://firebase.google.com/",
+			level: 70,
+		},
+		// {
+		// 	name: "SQLite",
+		// 	icon: "/icons/sqlite.svg",
+		// 	link: "https://www.sqlite.org/",
+		// 	level: 75,
+		// },
+		// {
+		// 	name: "Redis",
+		// 	icon: "/icons/redis.svg",
+		// 	link: "https://redis.io/",
+		// 	level: 70,
+		// },
+		// {
+		// 	name: "GraphQL",
+		// 	icon: "/icons/graphql.svg",
+		// 	link: "https://graphql.org/",
+		// 	level: 75,
+		// },
+		// {
+		// 	name: "Supabase",
+		// 	icon: "/icons/supabase.svg",
+		// 	link: "https://supabase.io/",
+		// 	level: 75,
+		// },
+		// {
+		// 	name: "Strapi",
+		// 	icon: "/icons/strapi.svg",
+		// 	link: "https://strapi.io/",
+		// 	level: 75,
+		// },
+		// {
+		// 	name: "Elasticsearch",
+		// 	icon: "/icons/elasticsearch.svg",
+		// 	link: "https://www.elastic.co/elasticsearch/",
+		// 	level: 70,
+		// },
+	],
+	libraries: [
+		{
+			name: "Three.js",
+			icon: "/icons/threejs.svg",
+			link: "https://threejs.org/",
+			level: 70,
+		},
+		{
+			name: "Styled-Components",
+			icon: "/icons/styled-components.png",
+			link: "https://styled-components.com/",
+			level: 85,
+		},
+		{
+			name: "Framer-motion",
+			icon: "/icons/framer.svg",
+			link: "https://www.framer.com/motion/",
+			level: 80,
+		},
+		{
+			name: "Zustand",
+			icon: "https://user-images.githubusercontent.com/958486/218346783-72be5ae3-b953-4dd7-b239-788a882fdad6.svg",
+			link: "https://zustand-demo.pmnd.rs",
+			level: 75,
+		},
+		{
+			name: "NextAuth.js",
+			icon: "/icons/nextauthjs.png",
+			link: "https://next-auth.js.org/",
+			level: 70,
+		},
+		// {
+		// 	name: "Chakra-UI",
+		// 	icon: "/icons/chakra-ui.png",
+		// 	link: "https://chakra-ui.com/",
+		// 	level: 80,
+		// },
+		// {
+		// 	name: "Material-UI",
+		// 	icon: "/icons/material-ui.svg",
+		// 	link: "https://material-ui.com/",
+		// 	level: 80,
+		// },
+		// {
+		// 	name: "Ant-Design",
+		// 	icon: "/icons/ant-design.svg",
+		// 	link: "https://ant.design/",
+		// 	level: 75,
+		// },
+		// {
+		// 	name: "React-Bootstrap",
+		// 	icon: "/icons/react-bootstrap.svg",
+		// 	link: "https://react-bootstrap.github.io/",
+		// 	level: 80,
+		// },
+		// {
+		// 	name: "React-Query",
+		// 	icon: "/icons/react-query.svg",
+		// 	link: "https://react-query.tanstack.com/",
+		// 	level: 75,
+		// },
+		// {
+		// 	name: "React-Icons",
+		// 	icon: "/icons/react-icons.svg",
+		// 	link: "https://react-icons.github.io/react-icons/",
+		// 	level: 80,
+		// },{
+		// 	name: "React-Hook-Form",
+		// 	icon: "/icons/react-hook-form.svg",
+		// 	link: "https://react-hook-form.com/",
+		// 	level: 80,
+		// },
+	],
+	tools: [
+		{
+			name: "Git",
+			icon: "/icons/git.svg",
+			link: "https://git-scm.com/",
+			level: 85,
+		},
+		{
+			name: "Github",
+			icon: "/icons/github.svg",
+			link: "https://github.com/",
+			level: 85,
+		},
+		{
+			name: "Postman",
+			icon: "/icons/postman.svg",
+			link: "https://www.postman.com/",
+			level: 80,
+		},
+		{
+			name: "Figma",
+			icon: "/icons/figma.svg",
+			link: "https://www.figma.com/",
+			level: 85,
+		},
+		{
+			name: "Docker",
+			icon: "/icons/docker.svg",
+			link: "https://www.docker.com/",
+			level: 75,
+		},
+		// {
+		// 	name: "Vercel",
+		// 	icon: "/icons/vercel.svg",
+		// 	link: "https://vercel.com/",
+		// 	level: 80,
+		// },
+		// {
+		// 	name: "Netlify",
+		// 	icon: "/icons/netlify.svg",
+		// 	link: "https://www.netlify.com/",
+		// 	level: 80,
+		// },
+		// {
+		// 	name: "Heroku",
+		// 	icon: "/icons/heroku.svg",
+		// 	link: "https://www.heroku.com/",
+		// 	level: 75,
+		// },
+		{
+			name: "Flutter",
+			icon: "/icons/flutter.svg",
+			link: "https://flutter.dev/",
+			level: 75,
+		},
+	],
 };
+

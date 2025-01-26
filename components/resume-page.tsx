@@ -1,231 +1,284 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { useState, useEffect } from "react"
+import { motion, useScroll, useSpring } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { Download, ExternalLink } from 'lucide-react'
+import { Download, ExternalLink, Moon, Sun } from "lucide-react"
 import Link from "next/link"
+import TransitionEffect from "./transition-effect"
+import { useTheme } from "next-themes"
+
+const personalInfo = {
+  name: "Rajat Kumar Maharana",
+  title: "Full Stack Java Developer",
+  email: "mrajat00@gmail.com",
+  phone: "9861711134",
+  location: "Berhampur, India",
+  links: [
+    { name: "Portfolio", url: "https://rajat-r.vercel.app" },
+    { name: "GitHub", url: "https://github.com/razor-eng" },
+    { name: "LinkedIn", url: "https://linkedin.com/rajat-kumar-maharana" },
+  ],
+};
+
+const education = [
+  {
+    degree: "B.Tech in Computer Science",
+    school: "National Institute of Science and Technology",
+    year: "2018 - 2022",
+    score: "8.2 GPA",
+  },
+  {
+    degree: "12th (CBSE - PCM)",
+    school: "Centurion Public School",
+    year: "2017 - 2018",
+    score: "7.9 GPA",
+  },
+  {
+    degree: "Secondary School",
+    school: "Centurion Public School",
+    year: "2015 - 2016",
+    score: "86%",
+  },
+];
+
+const experience = [
+  {
+    title: "Front-End Developer (Freelancer)",
+    company: "Fiverr",
+    year: "May 2024 - October 2024",
+    responsibilities: [
+      "Developed responsive web apps using Next.js, React, and TypeScript, improving page load speed by 30% for 5000+ active users",
+      "Styled mobile-first UIs with Tailwind CSS, increasing mobile traffic by 40% and boosting user engagement by 15%",
+      "Integrated APIs and optimized performance, reducing response times by 50% and enhancing app speed by 20%",
+      "Ensured SEO optimization and cross-browser compatibility, achieving a 95+% SEO score and increasing organic traffic by 25%",
+      "Delivered 5+ major projects with 90%+ client satisfaction",
+    ],
+  },
+];
+
+const skills = [
+  "Java", "React.js", "Next.js", "C++", "Python", "HTML", "CSS", "JavaScript", "TypeScript",
+  "TailwindCSS", "Redux Toolkit", "MySQL", "MongoDB", "Firebase", "Git", "J2EE", "Spring Boot",
+  "Node.js", "Express.js", "REST APIs", "Microservices", "Spring Tool Suite", "OS", "DBMS",
+  "Computer Networks", "OOP", "Critical Thinking", "Problem Solving",
+];
+
+const certifications = [
+  {
+    name: "Java Full Stack Development Certification",
+    issuer: "Digital Lync Hyderabad",
+    year: "2024",
+    url: ""
+  },
+];
+
+const projects = [
+  {
+    name: "JIRA Application",
+    description: "A project management app for issue tracking, task management, and workflow automation using Next.js, TailwindCSS, Hono, and Appwrite",
+    url: "https://jira-2024.vercel.app",
+  },
+  {
+    name: "E-Commerce Website",
+    description: "A fully responsive e-commerce platform with an admin panel using React.js, TailwindCSS, and Firebase",
+    url: "https://easybuyy.vercel.app",
+  },
+  {
+    name: "File Management & Sharing Platform",
+    description: "A responsive platform for file uploads, organization, and sharing using React 19, Next.js 15, TailwindCSS, and Appwrite",
+    url: "https://storeit-r.vercel.app",
+  },
+];
 
 export function ResumePage() {
-  const personalInfo = {
-    name: "John Doe",
-    title: "Full Stack Developer",
-    email: "john.doe@example.com",
-    phone: "+1 (555) 123-4567",
-    location: "San Francisco, CA",
-    links: [
-      { name: "Portfolio", url: "https://johndoe.dev" },
-      { name: "GitHub", url: "https://github.com/johndoe" },
-      { name: "LinkedIn", url: "https://linkedin.com/in/johndoe" },
-    ],
-  }
+  const { theme, setTheme } = useTheme()
+  const { scrollYProgress } = useScroll()
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  })
 
-  const education = [
-    {
-      degree: "Master of Science in Computer Science",
-      school: "Stanford University",
-      year: "2018 - 2020",
-    },
-    {
-      degree: "Bachelor of Science in Software Engineering",
-      school: "Massachusetts Institute of Technology",
-      year: "2014 - 2018",
-    },
-  ]
+  const [activeSection, setActiveSection] = useState("")
 
-  const experience = [
-    {
-      title: "Senior Frontend Developer",
-      company: "Tech Innovators Inc.",
-      year: "2020 - Present",
-      responsibilities: [
-        "Lead a team of 5 developers in creating responsive and accessible web applications",
-        "Implemented state management solutions using Redux and Context API",
-        "Optimized application performance, resulting in a 40% increase in load speed",
-      ],
-    },
-    {
-      title: "Full Stack Developer",
-      company: "WebSolutions Co.",
-      year: "2018 - 2020",
-      responsibilities: [
-        "Developed and maintained multiple client websites using React and Node.js",
-        "Integrated third-party APIs and services to enhance website functionality",
-        "Collaborated with UX designers to implement pixel-perfect, responsive designs",
-      ],
-    },
-  ]
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = document.querySelectorAll("section")
+      let current = ""
 
-  const skills = [
-    "JavaScript (ES6+)", "React", "Next.js", "Node.js", "TypeScript",
-    "HTML5", "CSS3", "Tailwind CSS", "GraphQL", "RESTful APIs",
-    "Git", "Agile Methodologies", "Test-Driven Development",
-  ]
+      sections.forEach((section) => {
+        const sectionTop = section.offsetTop
+        if (window.pageYOffset >= sectionTop - 60) {
+          current = section.getAttribute("id") || ""
+        }
+      })
 
-  const certifications = [
-    {
-      name: "AWS Certified Solutions Architect",
-      issuer: "Amazon Web Services",
-      year: "2022",
-      url: "https://www.youracclaim.com/badges/aws-certified-solutions-architect",
-    },
-    {
-      name: "Google Cloud Professional Developer",
-      issuer: "Google Cloud",
-      year: "2021",
-      url: "https://www.credential.net/google-cloud-professional-developer",
-    },
-    {
-      name: "React Native Specialist",
-      issuer: "Udacity",
-      year: "2020",
-      url: "https://confirm.udacity.com/react-native-specialist",
-    },
-  ]
+      setActiveSection(current)
+    }
 
-  const projects = [
-    {
-      name: "E-commerce Platform",
-      description: "A full-stack e-commerce solution with React, Node.js, and MongoDB",
-      url: "/projects/e-commerce-platform",
-    },
-    {
-      name: "Task Management App",
-      description: "A React Native mobile app for task management and productivity",
-      url: "/projects/task-management-app",
-    },
-    {
-      name: "Portfolio Website",
-      description: "A responsive portfolio website built with Next.js and Tailwind CSS",
-      url: "/projects/portfolio-website",
-    },
-  ]
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   return (
-    <div className="container mx-auto px-4">
-      <motion.div
+    <>
+      <TransitionEffect />
+      {/* <motion.div className="fixed top-0 left-0 right-0 h-1 bg-primary z-50" style={{ scaleX }} /> */}
+      <motion.main
+        className="container mx-auto px-4 py-8 max-w-5xl"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="max-w-4xl mx-auto"
+        transition={{ duration: 0.5, delay: 0.6 }}
       >
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">{personalInfo.name}</h1>
-          <p className="text-xl text-muted-foreground mb-4">{personalInfo.title}</p>
-          <div className="flex justify-center space-x-4 mb-6">
-            <p className="text-muted-foreground">{personalInfo.email}</p>
-            <p className="text-muted-foreground">{personalInfo.phone}</p>
-            <p className="text-muted-foreground">{personalInfo.location}</p>
-          </div>
-          <div className="flex justify-center space-x-4">
-            {personalInfo.links.map((link, index) => (
-              <Link
+        <section id="about" className="mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-center"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">{personalInfo.name}</h2>
+            <p className="text-xl text-muted-foreground mb-4">{personalInfo.title}</p>
+            <div className="flex flex-wrap justify-center gap-4 mb-6">
+              <p className="text-muted-foreground">{personalInfo.email}</p>
+              <p className="text-muted-foreground">{personalInfo.phone}</p>
+              <p className="text-muted-foreground">{personalInfo.location}</p>
+            </div>
+            <div className="flex flex-wrap justify-center gap-4">
+              {personalInfo.links.map((link, index) => (
+                <Link
+                  key={index}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline"
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </div>
+          </motion.div>
+        </section>
+
+        <div className="grid md:grid-cols-2">
+          <Section id="education" title="Education">
+            {education.map((edu, index) => (
+              <motion.div
                 key={index}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:underline"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="mb-4"
               >
-                {link.name}
-              </Link>
+                <h3 className="text-lg font-semibold">{edu.degree}</h3>
+                <p className="text-muted-foreground">{edu.school}</p>
+                <p className="text-sm text-muted-foreground">{edu.year}</p>
+              </motion.div>
             ))}
-          </div>
+          </Section>
+
+          <Section id="experience" title="Experience">
+            {experience.map((exp, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="mb-6"
+              >
+                <h3 className="text-lg font-semibold">{exp.title}</h3>
+                <p className="text-muted-foreground">{exp.company}</p>
+                <p className="text-sm text-muted-foreground mb-2">{exp.year}</p>
+                <ul className="list-disc list-inside text-sm text-muted-foreground">
+                  {exp.responsibilities.map((resp, respIndex) => (
+                    <li key={respIndex}>{resp}</li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
+          </Section>
         </div>
 
-        <Button className="mb-12">
-          Download Resume <Download className="ml-2" size={16} />
-        </Button>
-
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="mb-12"
-        >
-          <h2 className="text-2xl font-bold text-foreground mb-4">Education</h2>
-          {education.map((edu, index) => (
-            <div key={index} className="mb-4">
-              <h3 className="text-lg font-semibold">{edu.degree}</h3>
-              <p className="text-muted-foreground">{edu.school}</p>
-              <p className="text-sm text-muted-foreground">{edu.year}</p>
-            </div>
-          ))}
-        </motion.section>
-
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="mb-12"
-        >
-          <h2 className="text-2xl font-bold text-foreground mb-4">Experience</h2>
-          {experience.map((exp, index) => (
-            <div key={index} className="mb-6">
-              <h3 className="text-lg font-semibold">{exp.title}</h3>
-              <p className="text-muted-foreground">{exp.company}</p>
-              <p className="text-sm text-muted-foreground mb-2">{exp.year}</p>
-              <ul className="list-disc list-inside text-sm text-muted-foreground">
-                {exp.responsibilities.map((resp, respIndex) => (
-                  <li key={respIndex}>{resp}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </motion.section>
-
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-          className="mb-12"
-        >
-          <h2 className="text-2xl font-bold text-foreground mb-4">Skills</h2>
-          <div className="flex flex-wrap gap-2">
+        <Section id="skills" title="Skills">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-wrap gap-2"
+          >
             {skills.map((skill, index) => (
-              <span key={index} className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm">
+              <motion.span
+                key={index}
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.2, delay: index * 0.05 }}
+                className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm"
+              >
                 {skill}
-              </span>
+              </motion.span>
             ))}
-          </div>
-        </motion.section>
+          </motion.div>
+        </Section>
 
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.8 }}
-          className="mb-12"
-        >
-          <h2 className="text-2xl font-bold text-foreground mb-4">Certifications</h2>
-          {certifications.map((cert, index) => (
-            <div key={index} className="mb-4">
-              <h3 className="text-lg font-semibold">{cert.name}</h3>
-              <p className="text-muted-foreground">{cert.issuer}</p>
-              <p className="text-sm text-muted-foreground">{cert.year}</p>
-              <Link href={cert.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                View Certificate <ExternalLink className="inline-block ml-1" size={14} />
-              </Link>
-            </div>
-          ))}
-        </motion.section>
+        <div className="grid md:grid-cols-2">
+          <Section id="certifications" title="Certifications">
+            {certifications.map((cert, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="mb-4"
+              >
+                <h3 className="text-lg font-semibold">{cert.name}</h3>
+                <p className="text-muted-foreground">{cert.issuer}</p>
+                <p className="text-sm text-muted-foreground">{cert.year}</p>
+                <Link href={cert.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                  View Certificate <ExternalLink className="inline-block ml-1" size={14} />
+                </Link>
+              </motion.div>
+            ))}
+          </Section>
 
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 1 }}
-          className="mb-12"
-        >
-          <h2 className="text-2xl font-bold text-foreground mb-4">Projects</h2>
-          {projects.map((project, index) => (
-            <div key={index} className="mb-4">
-              <h3 className="text-lg font-semibold">{project.name}</h3>
-              <p className="text-muted-foreground mb-2">{project.description}</p>
-              <Link href={project.url} className="text-primary hover:underline">
-                View Project <ExternalLink className="inline-block ml-1" size={14} />
-              </Link>
-            </div>
-          ))}
-        </motion.section>
-      </motion.div>
-    </div>
+          <Section id="projects" title="Projects">
+            {projects.map((project, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="mb-4"
+              >
+                <h3 className="text-lg font-semibold">{project.name}</h3>
+                <p className="text-muted-foreground mb-2">{project.description}</p>
+                <Link href={project.url} className="text-primary hover:underline">
+                  View Project <ExternalLink className="inline-block ml-1" size={14} />
+                </Link>
+              </motion.div>
+            ))}
+          </Section>
+        </div>
+      </motion.main>
+    </>
   )
 }
+
+function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
+  return (
+    <section id={id} className="mb-16">
+      <motion.h2
+        initial={{ opacity: 0, x: -20 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5 }}
+        className="text-3xl font-bold mb-6"
+      >
+        {title}
+      </motion.h2>
+      {children}
+    </section>
+  )
+}
+
+
 

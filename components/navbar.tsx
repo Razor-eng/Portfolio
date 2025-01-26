@@ -1,37 +1,27 @@
 "use client"
 
-import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, Github, Linkedin, Twitter, Sun, Moon, Laptop } from 'lucide-react'
+import { motion } from "framer-motion"
+import { MenuIcon } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { useTheme } from "next-themes"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { GithubIcon, LinkedInIcon, MoonIcon, SunIcon } from "@/data/icons"
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet"
+import Image from "next/image"
 
 const navItems = [
   { name: "Home", href: "/" },
   { name: "About", href: "/about" },
   { name: "Projects", href: "/projects" },
   { name: "Skills", href: "/skills" },
-  // { name: "Blog", href: "/blog" },
   { name: "Resume", href: "/resume" },
   { name: "Contact", href: "/contact" },
 ]
 
 export function Navbar() {
-  const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
-  const { setTheme } = useTheme()
-
-  useEffect(() => {
-    setIsOpen(false)
-  }, [pathname])
+  const { theme, setTheme } = useTheme()
 
   return (
     <motion.header
@@ -40,128 +30,148 @@ export function Navbar() {
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
       className="fixed w-full top-0 z-20 bg-background/50 backdrop-blur-lg border-b border-border"
     >
-      <div className="container mx-auto px-4 py-4">
+      <div className="container mx-auto px-4 py-1">
         <div className="flex items-center justify-between">
-          <Link href="/" className="text-foreground text-2xl font-bold">
-            JD
+          <Link href="/" prefetch={false}>
+            <Image
+              priority
+              height={500}
+              width={500}
+              src={'/logo.png'}
+              alt="logo"
+              className="w-20 h-14"
+            />
           </Link>
 
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-4">
             {navItems.map((item) => (
-              <Link
+              <CustomLink
                 key={item.name}
                 href={item.href}
-                className={`text-foreground/70 hover:text-foreground transition-colors ${pathname === item.href ? 'font-bold' : ''}`}
-              >
-                {item.name}
-              </Link>
+                title={item.name}
+              />
             ))}
           </nav>
 
-          <div className="hidden md:flex items-center space-x-4">
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-foreground/70 hover:text-foreground">
-              <Github size={20} />
-            </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-foreground/70 hover:text-foreground">
-              <Linkedin size={20} />
-            </a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-foreground/70 hover:text-foreground">
-              <Twitter size={20} />
-            </a>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                  <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                  <span className="sr-only">Toggle theme</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setTheme("light")}>
-                  <Sun className="mr-2 h-4 w-4" />
-                  <span>Light</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme("dark")}>
-                  <Moon className="mr-2 h-4 w-4" />
-                  <span>Dark</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setTheme("system")}>
-                  <Laptop className="mr-2 h-4 w-4" />
-                  <span>System</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+          <div className="hidden md:flex items-center">
+            <motion.a href="https://github.com/razor-eng" target={"_blank"}
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.9 }}
+              className='w-6 mx-2'
+            >
+              <GithubIcon />
+            </motion.a>
+            <motion.a href="https://www.linkedin.com/in/rajat-kumar-maharana" target={"_blank"}
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.9 }}
+              className='w-6 mx-2'
+            >
+              <LinkedInIcon />
+            </motion.a>
+            <motion.a href="mailto:mrajat00@gmail.com" target={'_blank'}
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.9 }}
+              className='w-6 mx-2'
+            >
+              <Image priority height={500} width={500} className="size-full" src={'/svgs/gmail.svg'} alt="mail" />
+            </motion.a>
+            <button
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className={`ml-2 size-8 flex items-center justify-center rounded-full p-1 ${theme === "dark" ? "bg-zinc-200 text-zinc-800" : "bg-zinc-800 text-yellow-500"}`}
+            >
+              {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+            </button>
           </div>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </Button>
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline" size="icon" className="lg:hidden">
+                <MenuIcon className="h-6 w-6" />
+                <span className="sr-only">Toggle navigation menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left">
+              <SheetHeader>
+                <SheetTitle className="hidden">Navbar</SheetTitle>
+                <SheetDescription className="hidden">Navbar Toggle</SheetDescription>
+              </SheetHeader>
+              <Link href="/" className="mr-6 hidden lg:flex" prefetch={false}>
+                JD
+              </Link>
+              <div className="container flex flex-col justify-between h-full mx-auto px-4 py-4">
+                <div className="flex flex-col">
+                  {navItems.map((item) => (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      prefetch={false}
+                      className={`flex w-full pl-4 items-center justify-between py-2 text-lg font-semibold text-foreground/70 hover:text-foreground transition-colors`}
+                    >
+                      {item.name}
+                      <div className={`${pathname === item.href ? 'bg-primary size-3 rounded-full' : 'hidden'}`} />
+                    </Link>
+                  ))}
+                </div>
+                <div className="flex items-center justify-between mt-4">
+                  <div className="flex items-center">
+                    <motion.a href="https://github.com/razor-eng" target={"_blank"}
+                      whileHover={{ y: -2 }}
+                      whileTap={{ scale: 0.9 }}
+                      className='w-6 mx-2'
+                    >
+                      <GithubIcon />
+                    </motion.a>
+                    <motion.a href="https://www.linkedin.com/in/rajat-kumar-maharana-80103820b/" target={"_blank"}
+                      whileHover={{ y: -2 }}
+                      whileTap={{ scale: 0.9 }}
+                      className='w-6 mx-2'
+                    >
+                      <LinkedInIcon />
+                    </motion.a>
+                    <motion.a href="mailto:mrajat00@gmail.com" target={'_blank'}
+                      whileHover={{ y: -2 }}
+                      whileTap={{ scale: 0.9 }}
+                      className='w-6 mx-2'
+                    >
+                      <Image priority height={500} width={500} className="size-full" src={'/svgs/gmail.svg'} alt="mail" />
+                    </motion.a>
+                  </div>
+                  <button
+                    onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                    className={`ml-2 size-8 flex items-center justify-center rounded-full p-1 ${theme === "dark" ? "bg-zinc-200 text-zinc-800" : "bg-zinc-800 text-yellow-500"}`}
+                  >
+                    {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+                  </button>
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
-
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden bg-background/90 backdrop-blur-lg"
-          >
-            <div className="container mx-auto px-4 py-4">
-              {navItems.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={`block py-2 text-foreground/70 hover:text-foreground transition-colors ${pathname === item.href ? 'font-bold' : ''}`}
-                >
-                  {item.name}
-                </Link>
-              ))}
-              <div className="flex items-center space-x-4 mt-4">
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-foreground/70 hover:text-foreground">
-                  <Github size={20} />
-                </a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-foreground/70 hover:text-foreground">
-                  <Linkedin size={20} />
-                </a>
-                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-foreground/70 hover:text-foreground">
-                  <Twitter size={20} />
-                </a>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                      <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                      <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                      <span className="sr-only">Toggle theme</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => setTheme("light")}>
-                      <Sun className="mr-2 h-4 w-4" />
-                      <span>Light</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setTheme("dark")}>
-                      <Moon className="mr-2 h-4 w-4" />
-                      <span>Dark</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setTheme("system")}>
-                      <Laptop className="mr-2 h-4 w-4" />
-                      <span>System</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </motion.header>
   )
 }
 
+interface CustomLinkProps {
+  href: string;
+  title: string;
+  className?: string;
+}
+
+const CustomLink = ({ href, title, className = "" }: CustomLinkProps) => {
+  const path = usePathname();
+  return (
+    <Link href={href} className={`${className} ${path === href ? "dark:text-white text-black font-extrabold" : "dark:text-zinc-400 text-zinc-600"} relative text-sm px-1 pb-1 font-semibold group`}>
+      {title}
+      {/* <span className={`
+              h-[2px] inline-block bg-[#101010] 
+              absolute left-0 -bottom-0.5
+              group-hover:w-full translate-[width] ease duration-300
+              ${path === href ? 'w-full' : 'w-0'}
+              dark:bg-[#f9f9f9] `}
+      >
+        &nbsp;
+      </span> */}
+    </Link>
+  )
+}

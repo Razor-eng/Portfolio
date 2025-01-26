@@ -2,14 +2,64 @@
 
 import { useRef } from "react"
 import { domAnimation, LazyMotion, motion, useInView } from "framer-motion"
-import { TECHNOLOGIES } from "@/data/technologies"
+import { technologies } from "@/data/technologies"
+import Link from "next/link";
+import Image from "next/image";
+
+const tech = Object.entries(technologies)
+  .flatMap(([category, items]) =>
+    items.map((item) => ({
+      ...item,
+      category,
+    }))
+  );
+
+const techVariants = Object.keys(technologies);
 
 export function Skills() {
   const textRef = useRef(null);
-  const stackRef = useRef(null);
   const isTextInView = useInView(textRef, { once: true });
-  const isStackInView = useInView(stackRef, { once: true });
-  const techData = TECHNOLOGIES();
+
+  const languages = Object.entries(technologies)
+    .flatMap(([category, technology]) => (
+      <div className="w-full h-fit flex gap-2 md:flex-row flex-col" key={category}>
+        <h3 className="md:hidden font-semibold">{category}</h3>
+        <motion.div
+          className="w-full flex flex-row flex-wrap gap-2"
+          variants={fadeIn({ direction: "right", type: "spring", delay: 0.75, duration: 1 })}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, amount: 0.25 }}
+        >
+          {technology.map((tech) => (
+            <Link
+              href={tech.link}
+              key={tech.name}
+              target="_blank"
+              className="flex flex-row"
+            >
+              <div className="w-[40px] h-[40px] relative flex flex-row items-center group cursor-pointer">
+                <Image
+                  src={tech.icon}
+                  alt={tech.name}
+                  fill={true}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 20vw"
+                />
+                <div className="opacity-0 w-fit min-w-[80px] bg-blue-50 dark:bg-zinc-700 whitespace-nowrap text-center text-xs rounded-lg py-2 absolute z-10 group-hover:opacity-100 px-3 -top-3/4 -left-1/3 pointer-events-none">
+                  {tech.name}
+                </div>
+              </div>
+            </Link>
+          ))}
+        </motion.div>
+      </div>
+    ));
+
+  const techNames = techVariants.map((tech, index) => (
+    <h3 className="h-[50px] md:flex items-center hidden" key={index}>
+      {tech}
+    </h3>
+  ));
 
   return (
     <LazyMotion features={domAnimation}>
@@ -48,45 +98,79 @@ export function Skills() {
               I work with the following technologies and tools:
             </p>
           </motion.div>
-          {!!techData.length && (
-            <div className="mt-10 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-10">
-              {techData.map((tech, index) => index < 4 && (
-                <div
-                  key={tech.category}
-                  ref={stackRef}
-                  className="flex flex-col gap-4 flex-1 md:flex-auto"
-                  style={{
-                    transform: isStackInView ? "none" : `${index === 0 ? "translateY(250px)" : `translateY(${200 / index}px)`}`,
-                    opacity: isStackInView ? 1 : 0,
-                    transition: `all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) ${index === 0 ? 0 : 0.5 * index}s`
-                  }}
-                >
-                  <div className="bg-white dark:bg-gray-800 h-full shadow-lg rounded-xl p-6 hover:scale-105 transform transition duration-300 ease-in-out">
-                    <h3 className="text-2xl font-bold text-gray-800 dark:text-white text-center mb-4">
-                      {tech.category}
-                    </h3>
-                    <div className="grid items-center grid-cols-3 gap-x-5 gap-y-8">
-                      {tech.items.map((item) => (
-                        <div key={item.name} className="group relative flex">
-                          <span role="img">
-                            {item.icon}
-                          </span>
-                          <span
-                            className="group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity bg-gray-800 text-sm text-gray-100 rounded-md absolute left-4 -translate-x-1/2 translate-y-full opacity-0 mt-3 mx-auto px-2 w-max"
-                          >
-                            {item.name}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              ))}
+          <motion.div
+            variants={fadeIn({ direction: "", type: "spring", delay: 0.1, duration: 1 })}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.25 }}
+            className="mt-6 bg-gradient-to-br from-gray-100 via-gray-200 to-gray-300 dark:from-gray-800 dark:via-gray-900 dark:to-gray-950 text-gray-800 dark:text-gray-200 md:w-fit md:min-w-[60%] w-full p-4 md:p-8 mx-auto rounded-lg shadow-lg flex flex-col md:flex-row gap-8"
+          >
+            <motion.div
+              variants={textVariant({ delay: 0 })}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true }}
+              className="flex flex-col justify-between md:w-[20%] w-full gap-4"
+            >
+              {techNames}
+            </motion.div>
+            <div className="w-[2px] h-auto bg-primary/50 rounded-lg md:block hidden mx-8" />
+            <div className="flex-1 flex flex-col gap-6">
+              {languages}
             </div>
-          )}
+          </motion.div>
         </div>
       </section>
     </LazyMotion>
   )
 }
 
+interface FadeInProps {
+  direction: "left" | "right" | "up" | "down" | "";
+  type: string;
+  delay: number;
+  duration: number;
+}
+
+const fadeIn = ({ direction, type, delay, duration }: FadeInProps) => {
+  return {
+    hidden: {
+      x: direction === "left" ? 100 : direction === "right" ? -100 : 0,
+      y: direction === "up" ? 100 : direction === "down" ? -100 : 0,
+      opacity: 0
+    },
+    show: {
+      x: 0,
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: type,
+        delay: delay,
+        duration: duration,
+        ease: "easeOut"
+      }
+    }
+  };
+};
+
+interface TextVariantProps {
+  delay: number;
+}
+
+const textVariant = ({ delay }: TextVariantProps) => {
+  return {
+    hidden: {
+      y: -50,
+      opacity: 0
+    },
+    show: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        duration: 1.25,
+        delay: delay
+      }
+    }
+  };
+};

@@ -1,241 +1,247 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { allProjects as projects } from "@/data/projects";
+import TransitionEffect from "@/components/transition-effect";
+import AnimatedText from "@/components/animated-text";
+import { GroupByOption, Project, SortOption } from "@/lib/types";
+import { ProjectsFilter } from "@/components/projects-filter";
+import Link from "next/link";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import Image from "next/image";
-import { ArrowUpRight, Settings2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { projects } from "@/data/projects";
-import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerOverlay, DrawerTrigger } from "@/components/ui/drawer";
-
-const allTags = Array.from(new Set(projects.flatMap((project) => project.tags)));
-
-interface Project {
-  id: number;
-  title: string;
-  description: string;
-  image: string;
-  link: string;
-  tags: string[];
-}
+import { ArrowUpRight } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+import { Separator } from "@/components/ui/separator";
 
 export default function Projects() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedTag, setSelectedTag] = useState<string | null>(null);
-  const [hoveredProject, setHoveredProject] = useState<number | null>(null);
-  const [projectList, setProjectList] = useState<typeof projects>([]);
-  const [sortBy, setSortBy] = useState<string>("title");
-  const [groupBy, setGroupBy] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedTechnologies, setSelectedTechnologies] = useState<string[]>([]);
+  const [sortOption, setSortOption] = useState<SortOption>("latest");
+  const [groupBy, setGroupBy] = useState<GroupByOption | null>(null);
 
-  useEffect(() => {
-    setProjectList(projects);
-  }, []);
-
-  const sortProjects = (projects: Project[]) => {
-    return [...projects].sort((a, b) => {
-      if (sortBy === "title") return a.title.localeCompare(b.title);
-      // if (sortBy === "date") return new Date(a.date).getTime() - new Date(b.date).getTime();
-      return 0;
-    });
-  };
-
-  const filteredProjects =
-    projectList.filter(
-      (project: Project) =>
-        (project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          project.description.toLowerCase().includes(searchTerm.toLowerCase())) &&
-        (!selectedTag || project.tags.includes(selectedTag))
-    );
-
-  const groupedProjects = groupBy
-    ? sortProjects(filteredProjects).reduce((groups: { [key: string]: Project[] }, project) => {
-      const groupKeys = groupBy === "tags" ? project.tags : ["All"];
-
-      groupKeys.forEach((key) => {
-        if (!groups[key]) groups[key] = [];
-        groups[key].push(project);
-      });
-
-      return groups;
-    }, {})
-    : { All: sortProjects(filteredProjects) };
+  const categories = [...new Set(projects.map((p) => p.category))];
+  const technologies = [...new Set(projects.flatMap((p) => p.technologies))];
 
   return (
-    <div className="container mx-auto px-4">
-      <h1 className="text-4xl font-bold text-center mb-8">My Projects</h1>
-      <div className="hidden md:flex flex-row gap-4 mb-8">
-        <Input
-          placeholder="Search projects..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="md:w-full"
-        />
-        <Select onValueChange={(value) => setSelectedTag(value === "all" ? null : value)}>
-          <SelectTrigger className="w-1/4">
-            <SelectValue placeholder="Filter by tag" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Tags</SelectItem>
-            {allTags.map((tag) => (
-              <SelectItem key={tag} value={tag}>
-                {tag}
-              </SelectItem>
+    <>
+      <TransitionEffect />
+      <div className="container mx-auto px-6 lg:px-12 space-y-3 md:space-y-6">
+        {/* <AnimatedText
+          text="Imagination Trumps Knowledge!"
+          className='!text-left lg:!text-5xl xl:!text-center md:!text-6xl sm:!text-5xl !text-3xl pr-8' /> */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.8 }}
+        >
+          <ProjectsFilter
+            categories={categories}
+            technologies={technologies}
+            onCategoryChange={setSelectedCategory}
+            onTechnologiesChange={setSelectedTechnologies}
+            onSortChange={setSortOption}
+            onGroupByChange={setGroupBy}
+          />
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 1 }}
+        >
+          <ProjectsGrid
+            projects={projects}
+            selectedCategory={selectedCategory}
+            selectedTechnologies={selectedTechnologies}
+            sortOption={sortOption}
+            groupBy={groupBy}
+          />
+        </motion.div>
+      </div>
+    </>
+  );
+}
+
+
+interface ProjectsGridProps {
+  projects: Project[];
+  selectedCategory: string | null;
+  selectedTechnologies: string[];
+  sortOption: SortOption;
+  groupBy: GroupByOption | null;
+}
+
+function ProjectsGrid({
+  projects,
+  selectedCategory,
+  selectedTechnologies,
+  sortOption,
+  groupBy,
+}: ProjectsGridProps) {
+  // Filter projects
+  let filteredProjects = projects.filter((project) => {
+    if (selectedCategory && project.category !== selectedCategory) return false;
+    if (
+      selectedTechnologies.length > 0 &&
+      !selectedTechnologies.every((tech) =>
+        project.technologies.includes(tech)
+      )
+    )
+      return false;
+    return true;
+  });
+
+  // Sort projects
+  filteredProjects = [...filteredProjects].sort((a, b) => {
+    switch (sortOption) {
+      case "latest":
+        return b.year - a.year;
+      case "alphabetical":
+        return a.title.localeCompare(b.title);
+      case "complexity":
+        const complexityOrder = {
+          Beginner: 1,
+          Intermediate: 2,
+          Advanced: 3,
+        };
+        return (
+          complexityOrder[b.complexity] - complexityOrder[a.complexity]
+        );
+      default:
+        return 0;
+    }
+  });
+
+  // Group projects
+  const groupedProjects = groupBy
+    ? filteredProjects.reduce((acc, project) => {
+      let key = "";
+      switch (groupBy) {
+        case "category":
+          key = project.category;
+          break;
+        case "techStack":
+          key = project.technologies[0];
+          break;
+        case "year":
+          key = project.year.toString();
+          break;
+      }
+      if (!acc[key]) acc[key] = [];
+      acc[key].push(project);
+      return acc;
+    }, {} as Record<string, Project[]>)
+    : { all: filteredProjects };
+
+  return (
+    <div className="space-y-8">
+      {Object.entries(groupedProjects).map(([group, projects]) => (
+        <motion.div
+          key={group}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          {group !== "all" && (
+            <h2 className="text-2xl font-bold mb-4">{group}</h2>
+          )}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {projects.map((project) => (
+              <ProjectCard key={project.id} project={project} />
             ))}
-          </SelectContent>
-        </Select>
-        <Select onValueChange={(value) => setSortBy(value)}>
-          <SelectTrigger className="md:w-1/4">
-            <SelectValue placeholder="Sort by" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="title">Title</SelectItem>
-            <SelectItem value="date">Date</SelectItem>
-          </SelectContent>
-        </Select>
-        <Select onValueChange={(value) => setGroupBy(value === "none" ? null : value)}>
-          <SelectTrigger className="w-1/4">
-            <SelectValue placeholder="Group by" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="none">None</SelectItem>
-            <SelectItem value="tags">Tags</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="md:hidden mb-8 flex items-center">
-        <Input
-          placeholder="Search projects..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="flex-1"
-        />
-        <Drawer>
-          <DrawerTrigger asChild>
-            <Button variant="outline">
-              <Settings2 className="mr-2" size={16} />
-            </Button>
-          </DrawerTrigger>
-          <DrawerOverlay />
-          <DrawerContent className="p-4">
-            <h2 className="text-xl font-bold mb-4">Filter Projects</h2>
-            <div className="space-y-4">
-              <Select onValueChange={(value) => setSelectedTag(value === "all" ? null : value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Filter by tag" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Tags</SelectItem>
-                  {allTags.map((tag) => (
-                    <SelectItem key={tag} value={tag}>
-                      {tag}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Select onValueChange={(value) => setSortBy(value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Sort by" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="title">Title</SelectItem>
-                </SelectContent>
-              </Select>
-              <Select onValueChange={(value) => setGroupBy(value === "none" ? null : value)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Group by" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="none">None</SelectItem>
-                  <SelectItem value="tags">Tags</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <DrawerFooter>
-              <DrawerClose className="w-full">
-                <Button className="w-full">
-                  Apply Filters
-                </Button>
-              </DrawerClose>
-            </DrawerFooter>
-          </DrawerContent>
-        </Drawer>
-      </div>
-      <AnimatePresence mode="wait">
-        {Object.keys(groupedProjects).map((group, groupIndex) => (
-          <div key={group}>
-            {groupBy && <h2 className="text-2xl font-bold mb-4">{group}</h2>}
-            <motion.div
-              key={`group-${groupIndex}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-            >
-              {groupedProjects[group].map((project, index) => (
-                <motion.div
-                  key={project.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="bg-card backdrop-blur-sm rounded-lg overflow-hidden"
-                  onHoverStart={() => setHoveredProject(project.id)}
-                  onHoverEnd={() => setHoveredProject(null)}
-                >
-                  <div className="relative aspect-video">
-                    <Image
-                      src={project.image || "/placeholder.svg"}
-                      alt={project.title}
-                      layout="fill"
-                      objectFit="cover"
-                      className="transition-transform duration-300 ease-in-out transform hover:scale-110"
-                    />
-                    <motion.div
-                      className="absolute inset-0 bg-black/60 flex items-center justify-center"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: hoveredProject === project.id ? 1 : 0 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <Button
-                        variant="outline"
-                        className="dark:text-white dark:border-white border-black transition-colors duration-300 dark:hover:bg-primary/10 bg-secondary hover:bg-secondary/60"
-                        asChild
-                      >
-                        <a href={project.link} className="flex items-center">
-                          View Project <ArrowUpRight className="ml-2" size={16} />
-                        </a>
-                      </Button>
-                    </motion.div>
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-foreground mb-2">{project.title}</h3>
-                    <p className="text-muted-foreground mb-4">{project.description}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {project.tags.map((tag, tagIndex) => (
-                        <span key={tagIndex} className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
           </div>
-        ))}
-        {!filteredProjects.length && (
-          <motion.div
-            key="no-results"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="text-center text-muted-foreground py-12"
-          >
-            No projects found. Try adjusting your search or filter.
-          </motion.div>
-        )}
-      </AnimatePresence>
+        </motion.div>
+      ))}
     </div>
+  );
+}
+
+
+interface ProjectCardProps {
+  project: Project;
+}
+
+function ProjectCard({ project }: ProjectCardProps) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      whileHover={{ y: -5 }}
+    >
+      <Link href={`/projects/${project.slug}`}>
+        <Card className="overflow-hidden group cursor-pointer h-full flex flex-col">
+          <CardHeader className="p-0">
+            {
+              project.images.length > 0 ? (
+                <Carousel className="w-full">
+                  <CarouselContent>
+                    {project.images.map((image, index) => (
+                      <CarouselItem key={index}>
+                        <div className="relative aspect-video">
+                          <Image
+                            src={image}
+                            alt={`${project.title} screenshot ${index + 1}`}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious />
+                  <CarouselNext />
+                </Carousel>
+              ) : (
+                <div className="relative aspect-video">
+                  <Image
+                    src="/placeholder.svg"
+                    alt="placeholder"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              )
+            }
+          </CardHeader>
+          <CardContent className="pt-6 pb-3 px-3 flex-1 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-xl font-semibold group-hover:text-primary transition-colors">
+                  {project.title}
+                </h3>
+                <ArrowUpRight className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
+              <p className="text-muted-foreground mb-2 line-clamp-3">
+                {project.description}
+              </p>
+              <div className="flex flex-wrap gap-1 mb-4">
+                {project.technologies.map((tech) => (
+                  <Badge key={tech} variant="secondary" className="capitalize rounded-md py-1">
+                    {tech}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+            <Separator className="mb-1" />
+            <div className="flex items-center justify-between mt-1">
+              <Badge
+                className={cn(
+                  "px-4 text-sm font-semibold rounded transition-colors",
+                  project.category === "Featured" && "bg-amber-500/10 text-amber-500 hover:bg-amber-500/30",
+                  project.category === "Recent" && "bg-blue-500/10 text-blue-500 hover:bg-blue-500/30",
+                  project.category === "Landing Page" && "bg-green-500/10 text-green-500 hover:bg-green-500/30",
+                )}
+              >
+                {project.category}
+              </Badge>
+              <span className="text-sm font-semibold text-muted-foreground">{project.year}</span>
+            </div>
+          </CardContent>
+        </Card>
+      </Link>
+    </motion.div>
   );
 }

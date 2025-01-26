@@ -18,7 +18,7 @@ export function FeaturedProjects() {
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-bl from-background via-background to-primary/20">
-      <section className="container mx-auto px-4 md:py-24">
+      <section className="container mx-auto px-4 py-10 md:py-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -78,8 +78,8 @@ export function FeaturedProjects() {
                 <Image
                   src={project.image || "/placeholder.svg"}
                   alt={project.title}
-                  layout="fill"
-                  objectFit="cover"
+                  fill
+                  style={{ objectFit: "cover" }}
                   className="transition-all duration-500 ease-in-out transform hover:scale-110 blur-sm group-hover:blur-none"
                 />
                 <motion.div

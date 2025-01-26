@@ -15,7 +15,7 @@ export function Hero() {
   const isInView = useInView(ref, { once: true });
 
   return (
-    <section ref={introRef} className="relative min-h-screen flex pt-1 justify-center overflow-hidden bg-gradient-to-br from-background via-background to-primary/20 pt-20">
+    <section ref={introRef} className="relative min-h-screen flex justify-center overflow-hidden bg-gradient-to-br from-background via-background to-primary/20 pt-20">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <motion.div
@@ -24,9 +24,9 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="relative"
           >
-            <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-300 dark:bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-            <div className="absolute top-0 -right-4 w-72 h-72 bg-yellow-300 dark:bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-            <div className="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 dark:bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+            <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-300 dark:hidden rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+            <div className="absolute top-0 -right-4 w-72 h-72 bg-yellow-300 dark:hidden rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+            <div className="absolute -bottom-8 -left-4 w-72 h-72 bg-pink-300 dark:hidden rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
             <div className="relative">
               <Image
                 src={heroData.image || "/placeholder.svg"}
@@ -87,7 +87,7 @@ export function Hero() {
                 className="hover:bg-secondary/80 transition-colors duration-300"
                 asChild
               >
-                <Link href="mailto:mrajat00@gmail.com" target={'_blank'}>{heroData.cta.secondary.text}</Link>
+                <Link href="mailto:mrajat00@gmail.com" target={'_blank'} prefetch={false}>{heroData.cta.secondary.text}</Link>
               </Button>
             </div>
           </motion.div>

@@ -3,13 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { LazyMotion, domAnimation, useInView } from "framer-motion";
 import { useTheme } from "next-themes";
-
-const TimeLineData = [
-    { year: 2022, text: "Completed my Graduation" },
-    { year: 2022, text: "Dive completely into Frontend" },
-    { year: 2023, text: "Start my journey as a Frontend developer" },
-    { year: 2024, text: "Start my journey as a Fullstack developer" },
-];
+import { experiencesData } from "@/data/experienceData";
 
 export function TimeLine() {
     const { theme: colorMode } = useTheme();
@@ -31,7 +25,7 @@ export function TimeLine() {
 
         if (carouselRef.current) {
             const scrollLeft = Math.floor(
-                carouselRef.current.scrollWidth * 0.7 * (i / TimeLineData.length)
+                carouselRef.current.scrollWidth * 0.7 * (i / experiencesData.length)
             );
 
             scroll({ node: carouselRef.current, left: scrollLeft });
@@ -42,7 +36,7 @@ export function TimeLine() {
         if (carouselRef.current) {
             const index = Math.round(
                 (carouselRef.current.scrollLeft / (carouselRef.current.scrollWidth * 0.7)) *
-                TimeLineData.length
+                experiencesData.length
             );
 
             setActiveItem(index);
@@ -71,7 +65,7 @@ export function TimeLine() {
                 className="flex flex-row flex-nowrap gap-5 justify-between overflow-x-auto snap-x cursor-pointer max-w-fit"
             >
                 <>
-                    {TimeLineData.map((item, index) => {
+                    {experiencesData.map((item, index) => {
                         return (
                             <li
                                 id={`carousel__item-${index}`}
@@ -88,10 +82,10 @@ export function TimeLine() {
                                 }}
                             >
                                 <h3
-                                    aria-label={"What do I do in " + item.year}
+                                    aria-label={"What do I do in " + item.date}
                                     className="flex items-center gap-4 text-2xl font-bold"
                                 >
-                                    {`${item.year}`}
+                                    {`${item.date}`}
                                     <svg
                                         width="208"
                                         height="6"
@@ -121,7 +115,7 @@ export function TimeLine() {
                                     </svg>
                                 </h3>
                                 <p className="tracking-wide">
-                                    {item.text}
+                                    {item.title}
                                 </p>
                             </li>
                         );
