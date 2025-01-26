@@ -14,7 +14,7 @@ export function AboutMe() {
   return (
     <LazyMotion features={domAnimation}>
       <section className="relative overflow-hidden bg-gradient-to-tr from-background via-background to-primary/20 md:pl-32" id="about">
-        <section className="container mx-auto px-4 md:py-16 flex flex-col gap-8">
+        <section className="container mx-auto px-4 py-10 md:py-16 flex flex-col gap-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: 50 }}
