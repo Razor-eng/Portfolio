@@ -63,7 +63,6 @@ export default function About() {
                                     width={500}
                                     height={500}
                                     className="w-full lg:w-full md:inline-block md:w-full"
-                                    priority
                                     loading="lazy"
                                     placeholder="blur"
                                     blurDataURL="/placeholder.svg"
@@ -390,7 +389,7 @@ function Skills() {
                                 alt={skill.name}
                                 width={24}
                                 height={24}
-                                className="w-full h-full"
+                                className="w-6 h-6"
                                 priority
                             />
                             <span>{skill.name}</span>
