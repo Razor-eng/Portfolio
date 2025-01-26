@@ -261,7 +261,7 @@ function SkillCard({
         {getProficiencyLabel(skill.level)}
       </Badge>
       <div className="mb-4 flex justify-center items-center p-3 rounded-md bg-gray-100 dark:bg-gray-900 shadow-sm hover:scale-105 transition-all ease-in duration-300">
-        <div className="relative w-12 h-12 rounded-md overflow-hidden border border-gray-300 hover:shadow-lg transition-all duration-300 ease-in-out">
+        <div className="relative w-12 h-12 rounded-md overflow-hidden hover:shadow-lg transition-all duration-300 ease-in-out">
           {isLoading && (
             <div className="absolute inset-0 bg-gray-300 dark:bg-gray-700 animate-pulse"></div>
           )}
