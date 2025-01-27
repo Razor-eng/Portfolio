@@ -34,7 +34,6 @@ export default function Projects() {
   const [groupBy, setGroupBy] = useState<GroupByOption | null>(null)
 
   const categories = [...new Set(allProjects.map((p) => p.category))]
-  const technologies = [...new Set(allProjects.flatMap((p) => p.technologies))]
   const [sortBy, setSortBy] = useState<SortOption>("latest")
 
   const handleCategoryChange = (category: CategoryOption | "all") => {
@@ -189,19 +188,6 @@ export default function Projects() {
         >
           <ProjectsGrid
             projects={allProjects}
-            selectedCategory={selectedCategory}
-            selectedTechnologies={selectedTechnologies}
-            sortOption={sortOption}
-            groupBy={groupBy}
-          />
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 1 }}
-        >
-          <ProjectsGrid
-            projects={projects}
             selectedCategory={selectedCategory}
             selectedTechnologies={selectedTechnologies}
             sortOption={sortOption}
