@@ -2,6 +2,37 @@ import { Project } from "@/lib/types";
 
 export const allProjects: Project[] = [
   {
+    id: '0',
+    title: 'ProPrep',
+    slug: 'proprep',
+    description: 'A comprehensive interview preparation platform for developers, offering resources, exercises, and tools for interview success.',
+    longDescription: 'ProPrep is an interview preparation platform specifically designed for developers. It provides various resources and exercises, including coding challenges, UI components built with Radix UI, and smooth animations using Framer Motion. The platform is styled with Tailwind CSS and supports both light and dark themes using Next Themes. It also integrates React Hook Form with Zod for form validation, and includes features like data visualization through Recharts and date manipulation with date-fns.',
+    challenge: 'Providing a seamless, interactive interview preparation experience with modern UI and tools for developers.',
+    solution: 'Built using a modern stack including Next.js, React, and Tailwind CSS to ensure a responsive and engaging experience. Integrated various libraries for form management, date handling, and animations.',
+    technicalDetails: 'Built with Next.js, React, Tailwind CSS, Radix UI, React Hook Form, Zod, Framer Motion, date-fns, Recharts, and Next Themes.',
+    category: 'Featured',
+    technologies: ['Next.js', 'React', 'Tailwind CSS', 'Shadcn UI', 'Typescript', 'Framer Motion', 'date-fns', 'Next Themes'],
+    tags: ['Next.js', 'React', 'TailwindCSS', 'Typescript', 'Framer Motion', 'Zod', 'Recharts', 'React Hook Form', 'Next Themes'],
+    images: [
+      '/images/projects/Proprep/img1.png',
+      '/images/projects/Proprep/img2.png',
+      '/images/projects/Proprep/img3.png',
+    ],
+    year: 2025,
+    complexity: 'Advanced',
+    demoUrl: 'https://proprep.com',
+    repoUrl: 'https://github.com/Razor-eng/ProPrep',
+    features: [
+      'Comprehensive interview preparation tools and resources.',
+      'Accessible UI components with Radix UI.',
+      'Smooth animations with Framer Motion.',
+      'Form management and validation with React Hook Form and Zod.',
+      'Multiple themes (light/dark mode) with Next Themes.',
+      'Data visualization with Recharts.',
+      'Responsive, mobile-friendly design with Tailwind CSS.',
+    ],
+  },
+  {
     id: '1',
     title: 'StoreIt',
     slug: 'storeit',
@@ -447,5 +478,40 @@ export const allProjects: Project[] = [
     demoUrl: 'https://multi-apps-2024.vercel.app/',
     repoUrl: 'https://github.com/Razor-eng/MultiApps-2024',
   },
+  {
+    id: "19",
+    slug: "award-winning-website",
+    title: "Award-Winning Website",
+    description: "Build a visually captivating website inspired by Zentry, featuring scroll-triggered animations, geometric transitions, and engaging video storytelling.",
+    longDescription: `
+      Build a visually captivating website inspired by **Zentry**, featuring scroll-triggered animations, geometric transitions, and engaging video storytelling. 
+      Learn how to deliver a luxurious, modern feel, focusing on engaging UI/UX and smooth responsiveness, capturing the essence of what makes an Awwwards winner.
+    `,
+    challenge: "Creating engaging UI/UX with smooth transitions and responsive design.",
+    solution: "Used GSAP for scroll-based animations, Tailwind CSS for responsive design, and integrated video storytelling elements.",
+    technicalDetails: `
+      The project uses **React.js** for the frontend, **GSAP** for animations, and **Tailwind CSS** for styling. The design features smooth scrolling animations, 
+      3D hover effects, and video transitions, offering a modern, luxurious feel.
+    `,
+    category: 'Landing Page',
+    technologies: ['React.js', 'GSAP', 'Tailwind CSS'],
+    images: [
+      '/images/projects/Redefine/img1.png',
+      "https://github.com/user-attachments/assets/ab600f24-f4d9-4cef-8f1e-3fd9194afb30",
+    ],
+    tags: ['animations', 'scroll-based', '3d hover effects', 'video transitions', 'responsive', 'luxurious'],
+    year: 2025,
+    complexity: 'Advanced',
+    demoUrl: "https://redefine-iota.vercel.app",
+    repoUrl: "https://github.com/razor-eng/Redefine",
+    features: [
+      "Scroll-Based Animations",
+      "Clip Path Shaped Animations",
+      "3D Hover Effects",
+      "Video Transitions",
+      "Smooth UI/UX",
+      "Completely Responsive"
+    ]
+  }
 ];
 

@@ -146,7 +146,7 @@ export function ProjectDetails({ project }: ProjectDetailsProps) {
                                                                             priority={index === 0}
                                                                             loading={index === 0 ? 'eager' : 'lazy'}
                                                                             placeholder="blur"
-                                                                            blurDataURL="/placeholder.jpg"
+                                                                            blurDataURL="/placeholder.svg"
                                                                             onLoadingComplete={() => setLoading(false)}
                                                                         />
                                                                     </div>
@@ -165,7 +165,7 @@ export function ProjectDetails({ project }: ProjectDetailsProps) {
                                                                             priority={index === 0}
                                                                             loading={index === 0 ? 'eager' : 'lazy'}
                                                                             placeholder="blur"
-                                                                            blurDataURL="/placeholder.jpg"
+                                                                            blurDataURL="/placeholder.svg"
                                                                             onLoadingComplete={() => setLoading(false)}
                                                                         />
                                                                     </div>
