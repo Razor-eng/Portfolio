@@ -2,11 +2,9 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { allProjects as projects } from "@/data/projects";
+import { allProjects, allProjects as projects } from "@/data/projects";
 import TransitionEffect from "@/components/transition-effect";
 import AnimatedText from "@/components/animated-text";
-import { GroupByOption, Project, SortOption } from "@/lib/types";
-import { ProjectsFilter } from "@/components/projects-filter";
 import Link from "next/link";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
@@ -15,20 +13,48 @@ import { ArrowUpRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button"
+import type { SortOption, GroupByOption, CategoryOption, Project } from "@/lib/types"
+import { SlidersHorizontal } from "lucide-react"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 
 export default function Projects() {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedTechnologies, setSelectedTechnologies] = useState<string[]>([]);
-  const [sortOption, setSortOption] = useState<SortOption>("latest");
-  const [groupBy, setGroupBy] = useState<GroupByOption | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<CategoryOption | null>(null)
+  const [selectedTechnologies, setSelectedTechnologies] = useState<string[]>([])
+  const [sortOption, setSortOption] = useState<SortOption>("latest")
+  const [groupBy, setGroupBy] = useState<GroupByOption | null>(null)
 
-  const categories = [...new Set(projects.map((p) => p.category))];
-  const technologies = [...new Set(projects.flatMap((p) => p.technologies))];
+  const categories = [...new Set(allProjects.map((p) => p.category))]
+  const technologies = [...new Set(allProjects.flatMap((p) => p.technologies))]
+  const [sortBy, setSortBy] = useState<SortOption>("latest")
+
+  const handleCategoryChange = (category: CategoryOption | "all") => {
+    const newCategory = category === "all" ? null : category
+    setSelectedCategory(newCategory)
+  }
+
+  const handleSortChange = (value: SortOption) => {
+    setSortOption(value)
+    setSortBy(value)
+  }
+
+  const handleGroupByChange = (value: GroupByOption | "none") => {
+    setGroupBy(value === "none" ? null : value)
+  }
 
   return (
     <>
       <TransitionEffect />
-      <div className="container mx-auto px-6 lg:px-12 space-y-3 md:space-y-6">
+      <div className="container mx-auto px-4 lg:px-12 space-y-6">
         {/* <AnimatedText
           text="Imagination Trumps Knowledge!"
           className='!text-left lg:!text-5xl xl:!text-center md:!text-6xl sm:!text-5xl !text-3xl pr-8' /> */}
@@ -37,13 +63,136 @@ export default function Projects() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.8 }}
         >
-          <ProjectsFilter
-            categories={categories}
-            technologies={technologies}
-            onCategoryChange={setSelectedCategory}
-            onTechnologiesChange={setSelectedTechnologies}
-            onSortChange={setSortOption}
-            onGroupByChange={setGroupBy}
+          <div>
+            <div className="hidden md:grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8 rounded-lg border md:p-4 shadow-lg bg-gradient-to-l from-blue-50 to-blue-100 dark:from-gray-900 dark:to-gray-800">
+              <div className="space-y-2">
+                <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Category</h3>
+                <Select onValueChange={handleCategoryChange} value={selectedCategory || "all"}>
+                  <SelectTrigger className="w-full border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500">
+                    <SelectValue placeholder="Select a Category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel className="text-gray-500 dark:text-gray-400">Category</SelectLabel>
+                      <SelectItem value="all">All</SelectItem>
+                      {categories.map((category) => (
+                        <SelectItem key={category} value={category}>
+                          {category}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Sort By</h3>
+                <Select onValueChange={handleSortChange} value={sortBy}>
+                  <SelectTrigger className="w-full border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500">
+                    <SelectValue placeholder="Select sort option" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="latest">Latest First</SelectItem>
+                    <SelectItem value="alphabetical">Alphabetical</SelectItem>
+                    <SelectItem value="complexity">Complexity</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Group By</h3>
+                <Select onValueChange={handleGroupByChange} value={groupBy || "none"}>
+                  <SelectTrigger className="w-full border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500">
+                    <SelectValue placeholder="Select group by option" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">None</SelectItem>
+                    <SelectItem value="category">Category</SelectItem>
+                    <SelectItem value="techStack">Tech Stack</SelectItem>
+                    <SelectItem value="year">Year</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            <Dialog>
+              <DialogTrigger asChild className="md:hidden">
+                <Button
+                  variant="outline"
+                  size={"lg"}
+                  className="w-full py-6 flex items-center font-semibold text-base gap-2"
+                >
+                  <SlidersHorizontal className="h-4 w-4" />
+                  Filter & Sort
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader className="flex items-center justify-between">
+                  <DialogTitle>Filter Projects</DialogTitle>
+                  <DialogDescription>You can use this to filter through projects</DialogDescription>
+                </DialogHeader>
+                <Separator className="my-4" />
+                <div className="h-full pb-16">
+                  <div className="space-y-4">
+                    <h3 className="text-sm font-medium">Category</h3>
+                    <Select onValueChange={handleCategoryChange} value={selectedCategory || "all"}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select a Category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectLabel>Category</SelectLabel>
+                          <SelectItem value="all">All</SelectItem>
+                          {categories.map((category) => (
+                            <SelectItem key={category} value={category}>
+                              {category}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+
+                    <h3 className="text-sm font-medium">Sort By</h3>
+                    <Select onValueChange={handleSortChange} value={sortBy}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select sort option" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="latest">Latest First</SelectItem>
+                        <SelectItem value="alphabetical">Alphabetical</SelectItem>
+                        <SelectItem value="complexity">Complexity</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <h3 className="text-sm font-medium">Group By</h3>
+                    <Select onValueChange={handleGroupByChange} value={groupBy || "none"}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select group by option" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="none">None</SelectItem>
+                        <SelectItem value="category">Category</SelectItem>
+                        <SelectItem value="techStack">Tech Stack</SelectItem>
+                        <SelectItem value="year">Year</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 1 }}
+        >
+          <ProjectsGrid
+            projects={allProjects}
+            selectedCategory={selectedCategory}
+            selectedTechnologies={selectedTechnologies}
+            sortOption={sortOption}
+            groupBy={groupBy}
           />
         </motion.div>
         <motion.div
@@ -201,7 +350,7 @@ function ProjectCard({ project }: ProjectCardProps) {
                             className={`transition-all duration-700 ease-in-out ${isLoading ? 'scale-105 blur-sm' : 'scale-100 blur-0'}`}
                             placeholder="blur"
                             blurDataURL="/placeholder.svg"
-                            onLoadingComplete={() => setLoading(false)}
+                            onLoad={() => setLoading(false)}
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             loading="lazy"
                           />

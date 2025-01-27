@@ -83,9 +83,7 @@ export function FeaturedProjects() {
                   src={project.image || "/placeholder.svg"}
                   alt={project.title}
                   fill
-                  className={`transition-all duration-500 ease-in-out transform hover:scale-110 group-hover:blur-none ${isLoading ? 'opacity-0' : 'opacity-100'
-                    }`}
-                  style={{ objectFit: "cover" }}
+                  className={`transition-all aspect-video duration-500 ease-in-out transform hover:scale-110 group-hover:blur-none ${isLoading ? 'opacity-0' : 'opacity-100'}`}
                   loading="lazy"
                   onLoadingComplete={() => setIsLoading(false)}
                   placeholder="blur"
